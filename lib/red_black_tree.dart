@@ -2,11 +2,14 @@ library red_black_tree_collection;
 
 import 'dart:collection';
 
+typedef _Predicate<T> = bool Function(T value);
+
 /// A node in a red black tree. It holds the sorting key and the left
 /// and right children in the tree.
 class _RBTreeNode<K, Node extends _RBTreeNode<K, Node>> {
   final K key;
 
+  bool color = true;
   Node? _left;
   Node? _right;
 
@@ -33,14 +36,45 @@ class _RBTreeMapNode<K, V> extends _RBTreeNode<K, _RBTreeMapNode<K, V>> {
 }
 
 abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
+  Node? get _root;
+  set _root(Node? newValue);
 
+  int _count = 0;
+
+  Comparator<K> get _compare;
+
+  _Predicate get _validKey;
+
+  void _addNewNode(Node node) {
+    _count++;
+    if (_root == null) {
+      _root = node;
+      return;
+    }
+
+
+  }
 }
 
+int _dynamicCompare(dynamic a, dynamic b) => Comparable.compare(a, b);
 
-final class RBTreeMap<K, V> extends _RBTree<K, _RBTreeMapNode<K, V>>
+Comparator<K> _defaultCompare<K>() {
+  // If K <: Comparable, then we can just use Comparable.compare
+  // with no casts.
+  Object compare = Comparable.compare;
+  if (compare is Comparator<K>) {
+    return compare;
+  }
+  // Otherwise wrap and cast the arguments on each call.
+  return _dynamicCompare;
+}
+
+/*
+class RBTreeMap<K, V> extends _RBTree<K, _RBTreeMapNode<K, V>>
     with MapMixin<K, V> {
   @override
   V? operator [](Object? key) {
+    SplayTreeMap<int, int>((int a, int b) => a - b);
     // TODO: implement []
     throw UnimplementedError();
   }
@@ -66,7 +100,7 @@ final class RBTreeMap<K, V> extends _RBTree<K, _RBTreeMapNode<K, V>>
   }
 }
 
-final class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
+class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
     with Iterable<E>, SetMixin<E> {
   @override
   bool add(E value) {
@@ -90,4 +124,16 @@ final class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
     throw UnimplementedError();
   }
 
+  @override
+  _RBTreeSetNode<E>? _root;
+
+  @override
+  // TODO: implement _compare
+  Comparator<E> get _compare => throw UnimplementedError();
+
+  @override
+  // TODO: implement _validKey
+  _Predicate get _validKey => throw UnimplementedError();
+
 }
+*/
