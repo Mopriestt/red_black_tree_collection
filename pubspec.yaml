@@ -1,0 +1,11 @@
+name: red_black_tree_collection
+description: Red black tree based set and map for Dart.
+version: 0.0.1
+homepage:
+
+environment:
+  sdk: '>=2.12.0 <4.0.0'
+  flutter: ">=1.17.0"
+
+dev_dependencies:
+  test: ^1.24.6
