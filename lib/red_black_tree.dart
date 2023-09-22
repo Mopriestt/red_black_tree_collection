@@ -91,7 +91,8 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
   }
 
   Node? _naiveRemove(K key) {
-
+    if (_root == null) return null;
+    return null;
   }
 
   Node? _remove(K key) {
