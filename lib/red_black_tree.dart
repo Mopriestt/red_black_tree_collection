@@ -9,6 +9,7 @@ typedef _Predicate<T> = bool Function(T value);
 class _RBTreeNode<K, Node extends _RBTreeNode<K, Node>> {
   final K key;
 
+  // Color of node, true for red, false for black.
   bool color = true;
   Node? _left;
   Node? _right;
@@ -36,14 +37,32 @@ class _RBTreeMapNode<K, V> extends _RBTreeNode<K, _RBTreeMapNode<K, V>> {
 }
 
 abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
-  Node? get _root;
-  set _root(Node? newValue);
-
+  Node? _root;
   int _count = 0;
 
   Comparator<K> get _compare;
 
   _Predicate get _validKey;
+
+  Node _rotateLeft(Node node) {
+    if (node._right == null) return node;
+
+    var newRoot = node._right!;
+    node._right = newRoot._left;
+    newRoot._left = node;
+
+    return newRoot;
+  }
+
+  Node _rotateRight(Node node) {
+    if (node._left == null) return node;
+
+    var newRoot = node._left!;
+    node._left = newRoot._right;
+    newRoot._right = node;
+
+    return newRoot;
+  }
 
   void _addNewNode(Node node) {
     _count++;
@@ -52,7 +71,65 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
       return;
     }
 
+    var current = _root!;
+    while (true) {
+      var comp = _compare(current.key, node.key);
+      if (comp > 0) {
+        if (current._left == null) {
+          current._left = node;
+          break;
+        }
+        current = current._left!;
+      } else {
+        if (current._right == null) {
+          current._right = node;
+          break;
+        }
+        current = current._right!;
+      }
+    }
+  }
 
+  Node? _naiveRemove(K key) {
+
+  }
+
+  Node? _remove(K key) {
+    return _naiveRemove(key);
+  }
+
+  Node? _findNode(K key) {
+    var current = _root;
+    while (current != null) {
+      var comp = _compare(key, current.key);
+
+      if (comp == 0) return current;
+      current = comp < 0 ? current._left : current._right;
+    }
+
+    return null;
+  }
+
+  Node? get _first  {
+    if (_root == null) return null;
+    var current = _root!;
+
+    while (current._left != null) {
+      current = current._left!;
+    }
+
+    return current;
+  }
+
+  Node? get _last {
+    if (_root == null) return null;
+    var current = _root!;
+
+    while (current._right != null) {
+      current = current._right!;
+    }
+
+    return current;
   }
 }
 
