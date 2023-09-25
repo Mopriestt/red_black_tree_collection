@@ -92,7 +92,59 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
 
   Node? _naiveRemove(K key) {
     if (_root == null) return null;
-    return null;
+    Node? parent = null;
+    Node current = _root!;
+
+    void removeChild(Node? parent, Node child) {
+      if (parent?._left == child) parent?._left = null;
+      if (parent?._right == child) parent?._right = null;
+    }
+
+    void removeNode(Node? parent, Node child) {
+      if (child._left == null && child._right == null) {
+        removeChild(parent, child);
+        return;
+      }
+      if (child._left == null) {
+        if (parent?._left == child) {
+          parent?._left = child._right;
+        } else {
+          parent?._right = child._right;
+        }
+      } else {
+        if (parent?._left == child) {
+          parent?._left = child._left;
+        } else {
+          parent?._right = child._left;
+        }
+      }
+    }
+
+    while (true) {
+      var comp = _compare(key, current.key);
+      if (comp == 0) {
+        // Push down
+        while (current._left != null && current._right != null) {
+          if (current == _root) {
+            _root = _rotateRight(current);
+            parent = _root;
+            continue;
+          }
+          parent = _rotateRight(current);
+        }
+        removeNode(parent, current);
+        return current;
+      }
+      if (comp < 0) {
+        if (current._left == null) return null;
+        parent = current;
+        current = current._left!;
+      } else {
+        if (current._right == null) return null;
+        parent = current;
+        current = current._right!;
+      }
+    }
   }
 
   Node? _remove(K key) {
