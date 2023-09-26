@@ -1,4 +1,6 @@
-typedef _Predicate<T> = bool Function(T value);
+library red_black_tree_collection;
+
+typedef Predicate<T> = bool Function(T value);
 
 /// A node in a red black tree. It holds the sorting key and the left
 /// and right children in the tree.
@@ -13,27 +15,19 @@ class RBTreeNode<K, Node extends RBTreeNode<K, Node>> {
   RBTreeNode(this.key);
 }
 
-/// A node in a red black tree based map.
-///
-/// An [RBTreeNode] that also contains a value,
-/// and which implements [MapEntry].
-class _RBTreeMapNode<K, V> extends RBTreeNode<K, _RBTreeMapNode<K, V>> {
-  final V value;
-  _RBTreeMapNode(K key, this.value) : super(key);
-
-  _RBTreeMapNode<K, V> _replaceValue(V value) =>
-      _RBTreeMapNode<K, V>(key, value)
-        .._left = _left
-        .._right = _right;
-}
-
 abstract class RBTree<K, Node extends RBTreeNode<K, Node>> {
   Node? _root;
   int _count = 0;
 
   Comparator<K> get _compare;
+  Predicate get _validKey;
 
-  _Predicate get _validKey;
+  /// Counter incremented whenever the keys in the map change.
+  ///
+  /// Used to detect concurrent modifications.
+  int _modificationCount = 0;
+
+  int get count => _count;
 
   Node _rotateLeft(Node node) {
     if (node._right == null) return node;
@@ -55,26 +49,27 @@ abstract class RBTree<K, Node extends RBTreeNode<K, Node>> {
     return newRoot;
   }
 
-  void addNewNode(Node node) {
+  bool addNewNode(Node node) {
     _count++;
     if (_root == null) {
       _root = node;
-      return;
+      return true;
     }
 
     var current = _root!;
     while (true) {
       var comp = _compare(current.key, node.key);
+      if (comp == 0) return false;
       if (comp > 0) {
         if (current._left == null) {
           current._left = node;
-          break;
+          return true;
         }
         current = current._left!;
       } else {
         if (current._right == null) {
           current._right = node;
-          break;
+          return true;
         }
         current = current._right!;
       }
@@ -175,11 +170,16 @@ abstract class RBTree<K, Node extends RBTreeNode<K, Node>> {
 
     return current;
   }
+
+  void clear() {
+    _root = null;
+    _count = 0;
+  }
 }
 
 int _dynamicCompare(dynamic a, dynamic b) => Comparable.compare(a, b);
 
-Comparator<K> _defaultCompare<K>() {
+Comparator<K> defaultCompare<K>() {
   // If K <: Comparable, then we can just use Comparable.compare
   // with no casts.
   Object compare = Comparable.compare;
