@@ -101,6 +101,11 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
   }
 
   @override
+  bool contains(Object? value) {
+    return true;
+  }
+
+  @override
   // TODO: implement iterator
   Iterator<E> get iterator => throw UnimplementedError();
 
