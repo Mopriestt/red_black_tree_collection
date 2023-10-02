@@ -30,8 +30,6 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
   /// Used to detect concurrent modifications.
   int _modificationCount = 0;
 
-  int get count => _count;
-
   Node _rotateLeft(Node node) {
     if (node._right == null) return node;
 
@@ -52,7 +50,7 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     return newRoot;
   }
 
-  bool addNewNode(Node node) {
+  bool _addNewNode(Node node) {
     _count++;
     if (_root == null) {
       _root = node;
@@ -136,11 +134,11 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     }
   }
 
-  Node? removeNode(K key) {
+  Node? _removeNode(K key) {
     return _naiveRemove(key);
   }
 
-  Node? findNode(K key) {
+  Node? _findNode(K key) {
     var current = _root;
     while (current != null) {
       var comp = _compare(key, current.key);
