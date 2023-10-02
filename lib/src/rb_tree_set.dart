@@ -1,15 +1,11 @@
-library red_black_tree_collection;
-
-import 'dart:collection';
-
-import 'package:red_black_tree_collection/src/tree_base.dart';
+part of 'red_black_tree.dart';
 
 /// A node in a red black tree based set.
-class _RBTreeSetNode<K> extends RBTreeNode<K, _RBTreeSetNode<K>> {
+class _RBTreeSetNode<K> extends _RBTreeNode<K, _RBTreeSetNode<K>> {
   _RBTreeSetNode(K key) : super(key);
 }
 
-class RBTreeSet<E> extends RBTree<E, _RBTreeSetNode<E>>
+class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
     with Iterable<E>, SetMixin<E> {
   _RBTreeSetNode<E>? _root;
 

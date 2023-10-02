@@ -1,18 +1,15 @@
-import 'dart:collection';
-
-import 'package:red_black_tree_collection/src/tree_base.dart';
+part of 'red_black_tree.dart';
 
 /// A node in a red black tree based map.
 ///
-/// An [RBTreeNode] that also contains a value,
+/// An [_RBTreeNode] that also contains a value,
 /// and which implements [MapEntry].
-class _RBTreeMapNode<K, V> extends RBTreeNode<K, _RBTreeMapNode<K, V>> {
+class _RBTreeMapNode<K, V> extends _RBTreeNode<K, _RBTreeMapNode<K, V>> {
   final V value;
   _RBTreeMapNode(K key, this.value) : super(key);
 }
 
-
-class RBTreeMap<K, V> extends RBTree<K, _RBTreeMapNode<K, V>>
+class RBTreeMap<K, V> extends _RBTree<K, _RBTreeMapNode<K, V>>
     with MapMixin<K, V> {
   @override
   V? operator [](Object? key) {
@@ -39,4 +36,12 @@ class RBTreeMap<K, V> extends RBTree<K, _RBTreeMapNode<K, V>>
     // TODO: implement remove
     throw UnimplementedError();
   }
+
+  @override
+  // TODO: implement _compare
+  Comparator<K> get _compare => throw UnimplementedError();
+
+  @override
+  // TODO: implement _validKey
+  Predicate get _validKey => throw UnimplementedError();
 }

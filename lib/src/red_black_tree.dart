@@ -1,10 +1,13 @@
-library red_black_tree_collection;
+import 'dart:collection';
+
+part 'rb_tree_map.dart';
+part 'rb_tree_set.dart';
 
 typedef Predicate<T> = bool Function(T value);
 
 /// A node in a red black tree. It holds the sorting key and the left
 /// and right children in the tree.
-class RBTreeNode<K, Node extends RBTreeNode<K, Node>> {
+class _RBTreeNode<K, Node extends _RBTreeNode<K, Node>> {
   final K key;
 
   // Color of node, true for red, false for black.
@@ -12,10 +15,10 @@ class RBTreeNode<K, Node extends RBTreeNode<K, Node>> {
   Node? _left;
   Node? _right;
 
-  RBTreeNode(this.key);
+  _RBTreeNode(this.key);
 }
 
-abstract class RBTree<K, Node extends RBTreeNode<K, Node>> {
+abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
   Node? _root;
   int _count = 0;
 
