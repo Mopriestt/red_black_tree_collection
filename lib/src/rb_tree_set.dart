@@ -94,6 +94,9 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
   Set<R> cast<R>() => Set.castFrom<E, R>(this, newSet: _newSet);
 
   @override
+  int get length => _count;
+
+  @override
   bool add(E value) {
     if (_findNode(value) != null) return false;
     _addNewNode(_RBTreeSetNode(value));
@@ -114,6 +117,12 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
   E? lookup(Object? element) {
     // TODO: implement lookup
     throw UnimplementedError();
+  }
+
+  @override
+  void clear() {
+    _root = null;
+    _count = 0;
   }
 
   @override

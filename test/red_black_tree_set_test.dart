@@ -9,13 +9,28 @@ void main() {
   late RBTreeSet<int> set;
   setUp(() => set = RBTreeSet());
 
-  test('simple add', () {
-    final data = List.generate(50, (index) => index);
+  void addData(int n) {
+    assert(n > 0);
+
+    final data = List.generate(n, (index) => index);
     data.shuffle(random);
 
     for (int i in data) set.add(i);
+  }
+
+  test('simple add', () {
+    addData(50);
 
     for (int i = 0; i < 50; i ++) expect(set.contains(i), true);
     expect(set.contains(50), false);
+  });
+
+  test('simple clear', () {
+    addData(50);
+
+    set.clear();
+
+    expect(set.length, 0);
+    expect(set.contains(1), false);
   });
 }
