@@ -33,4 +33,12 @@ void main() {
     expect(set.length, 0);
     expect(set.contains(1), false);
   });
+
+  test('empty not empty', () {
+    expect(set.isEmpty, true);
+
+    addData(20);
+
+    expect(set.isNotEmpty, true);
+  });
 }
