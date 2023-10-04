@@ -1,12 +1,21 @@
+import 'dart:math';
+
 import 'package:test/test.dart';
 import 'package:red_black_tree_collection/red_black_tree.dart';
 
+final random = Random(DateTime.now().millisecondsSinceEpoch);
+
 void main() {
-  test('add', () {
-    final set = RBTreeSet<int>();
+  late RBTreeSet<int> set;
+  setUp(() => set = RBTreeSet());
 
-    set.add(1);
+  test('simple add', () {
+    final data = List.generate(50, (index) => index);
+    data.shuffle(random);
 
-    expect(set.contains(1), true);
+    for (int i in data) set.add(i);
+
+    for (int i = 0; i < 50; i ++) expect(set.contains(i), true);
+    expect(set.contains(50), false);
   });
 }
