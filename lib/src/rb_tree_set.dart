@@ -130,4 +130,18 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
     if (value is! E) return false;
     return _removeNode(value) != null;
   }
+
+  @override
+  E get first {
+    // TODO: Customize exceptions.
+    if (_count == 0) throw Exception();
+    return _firstNode!.key;
+  }
+
+  @override
+  E get last {
+    // TODO: Customize exceptions.
+    if (_count == 0) throw Exception();
+    return _lastNode!.key;
+  }
 }

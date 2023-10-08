@@ -146,7 +146,7 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     return null;
   }
 
-  Node? get firstNode  {
+  Node? get _firstNode  {
     if (_root == null) return null;
     var current = _root!;
 
@@ -157,7 +157,7 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     return current;
   }
 
-  Node? get lastNode {
+  Node? get _lastNode {
     if (_root == null) return null;
     var current = _root!;
 

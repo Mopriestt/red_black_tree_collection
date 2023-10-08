@@ -93,4 +93,18 @@ void main() {
       }
     });
   });
+
+  group('test partial order', () {
+    test('first', () {
+      addData(50);
+
+      expect(set.first, 0);
+    });
+
+    test('last', () {
+      addData(50);
+
+      expect(set.last, 49);
+    });
+  });
 }
