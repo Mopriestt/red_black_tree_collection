@@ -130,5 +130,4 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
     if (value is! E) return false;
     return _removeNode(value) != null;
   }
-
 }

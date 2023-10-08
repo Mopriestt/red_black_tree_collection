@@ -3,7 +3,8 @@ import 'dart:math';
 import 'package:test/test.dart';
 import 'package:red_black_tree_collection/red_black_tree.dart';
 
-final random = Random(DateTime.now().millisecondsSinceEpoch);
+//final random = Random(DateTime.now().millisecondsSinceEpoch);
+final random = Random(1);
 
 void main() {
   late RBTreeSet<int> set;
@@ -79,6 +80,17 @@ void main() {
 
       expect(set.contains(1), false);
       expect(set.length, 0);
+    });
+
+    test('delete all', () {
+      addData(50);
+
+      for (int i = 0; i < 50; i ++) {
+        expect(set.contains(i), true);
+        expect(set.remove(i), true);
+        expect(set.contains(i), false);
+        expect(set.length, 49 - i);
+      }
     });
   });
 }

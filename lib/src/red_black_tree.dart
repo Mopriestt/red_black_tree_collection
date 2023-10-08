@@ -82,29 +82,25 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     Node? parent = null;
     Node current = _root!;
 
-    void removeChild(Node? parent, Node child) {
-      if (parent?._left == child) parent?._left = null;
-      if (parent?._right == child) parent?._right = null;
-    }
-
     void removeNode(Node? parent, Node child) {
-      if (child._left == null && child._right == null) {
-        removeChild(parent, child);
-        return;
-      }
+      Node? replaceChild;
       if (child._left == null) {
+        replaceChild = child._right;
         if (parent?._left == child) {
           parent?._left = child._right;
         } else {
           parent?._right = child._right;
         }
       } else {
+        replaceChild = child._left;
         if (parent?._left == child) {
           parent?._left = child._left;
         } else {
           parent?._right = child._left;
         }
       }
+      if (child == _root) _root = replaceChild;
+      --_count;
     }
 
     while (true) {
