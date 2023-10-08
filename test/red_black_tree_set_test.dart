@@ -18,20 +18,50 @@ void main() {
     for (int i in data) set.add(i);
   }
 
-  test('simple add', () {
-    addData(50);
+  group('test add', () {
+    test('simple add', () {
+      addData(50);
 
-    for (int i = 0; i < 50; i ++) expect(set.contains(i), true);
-    expect(set.contains(50), false);
+      for (int i = 0; i < 50; i ++) expect(set.contains(i), true);
+      expect(set.contains(50), false);
+    });
+
+    test('duplicate add', () {
+      addData(50);
+      addData(50);
+
+      expect(set.length, 50);
+      for (int i = 0; i < 50; i ++) expect(set.contains(i), true);
+      expect(set.contains(50), false);
+    });
   });
 
-  test('simple clear', () {
-    addData(50);
+  group('test clear', () {
+    test('simple clear', () {
+      addData(50);
 
-    set.clear();
+      set.clear();
 
-    expect(set.length, 0);
-    expect(set.contains(1), false);
+      expect(set.length, 0);
+      expect(set.contains(1), false);
+    });
+
+    test('empty clear', () {
+      set.clear();
+
+      expect(set.length, 0);
+      expect(set.contains(1), false);
+    });
+
+    test('re-clear', () {
+      addData(50);
+      set.clear();
+      addData(50);
+      set.clear();
+
+      expect(set.length, 0);
+      expect(set.contains(1), false);
+    });
   });
 
   test('empty not empty', () {
@@ -40,5 +70,15 @@ void main() {
     addData(20);
 
     expect(set.isNotEmpty, true);
+  });
+
+  group('test delete', () {
+    test('simple delete', () {
+      set.add(1);
+      set.remove(1);
+
+      expect(set.contains(1), false);
+      expect(set.length, 0);
+    });
   });
 }

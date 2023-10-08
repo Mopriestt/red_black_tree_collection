@@ -127,8 +127,8 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
 
   @override
   bool remove(Object? value) {
-    // TODO: implement remove
-    throw UnimplementedError();
+    if (value is! E) return false;
+    return _removeNode(value) != null;
   }
 
 }
