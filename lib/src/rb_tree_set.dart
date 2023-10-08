@@ -110,13 +110,12 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
   }
 
   @override
-  // TODO: implement iterator
-  Iterator<E> get iterator => throw UnimplementedError();
+  Iterator<E> get iterator => _RBTreeKeyIterator<E, _RBTreeSetNode<E>>(this);
 
   @override
-  E? lookup(Object? element) {
-    // TODO: implement lookup
-    throw UnimplementedError();
+  E? lookup(Object? object) {
+    if (!_validKey(object)) return null;
+    return _findNode(object as E)?.key;
   }
 
   @override

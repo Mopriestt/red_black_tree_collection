@@ -107,4 +107,15 @@ void main() {
       expect(set.last, 49);
     });
   });
+
+  group('test iterator', () {
+    test('iteration', () {
+      addData(50);
+
+      for (int i = 0; i < 50; i ++) {
+        expect(set.iterator.moveNext(), true);
+        expect(set.iterator.current, i);
+      }
+    });
+  });
 }

@@ -43,3 +43,4 @@ from the package authors, and more.
  - lower(), upper()
  - Exceptions
  - Iterator
+ - Recurse less iterator.

@@ -186,3 +186,70 @@ Comparator<K> defaultCompare<K>() {
   // Otherwise wrap and cast the arguments on each call.
   return _dynamicCompare;
 }
+
+abstract class _RBTreeIterator<K, Node extends _RBTreeNode<K, Node>, T>
+    implements Iterator<T> {
+  final _RBTree<K, Node> _tree;
+
+  /// The current node, and all its ancestors in the tree.
+  ///
+  /// Only valid as long as the original tree isn't reordered.
+  final List<Node> _path = [];
+
+  /// Original modification counter of [_tree].
+  ///
+  /// Incremented on [_tree] when a key is added or removed.
+  /// If it changes, iteration is aborted.
+  ///
+  /// Not final because some iterators may modify the tree knowingly,
+  /// and they update the modification count in that case.
+  ///
+  /// Starts at `null` to represent a fresh, unstarted iterator.
+  int? _modificationCount;
+
+  _RBTreeIterator(_RBTree<K, Node> tree) : _tree = tree;
+
+  T get current {
+    if (_path.isEmpty) return null as T;
+    var node = _path.last;
+    return _getValue(node);
+  }
+
+  bool moveNext() {
+    if (_modificationCount != _tree._modificationCount) {
+      if (_modificationCount == null) {
+        _modificationCount = _tree._modificationCount;
+        var node = _tree._root;
+        while (node != null) {
+          _path.add(node);
+          node = node._left;
+        }
+        return _path.isNotEmpty;
+      }
+      throw ConcurrentModificationError(_tree);
+    }
+    if (_path.isEmpty) return false;
+    var node = _path.last;
+    var next = node._right;
+    if (next != null) {
+      while (next != null) {
+        _path.add(next);
+        next = next._left;
+      }
+      return true;
+    }
+    _path.removeLast();
+    while (_path.isNotEmpty && identical(_path.last._right, node)) {
+      node = _path.removeLast();
+    }
+    return _path.isNotEmpty;
+  }
+
+  T _getValue(Node node);
+}
+
+class _RBTreeKeyIterator<K, Node extends _RBTreeNode<K, Node>>
+    extends _RBTreeIterator<K, Node, K> {
+  _RBTreeKeyIterator(_RBTree<K, Node> tree) : super(tree);
+  K _getValue(Node node) => node.key;
+}
