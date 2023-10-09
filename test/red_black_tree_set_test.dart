@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:math';
 
 import 'package:test/test.dart';
@@ -112,9 +111,10 @@ void main() {
     test('iteration', () {
       addData(50);
 
+      final it = set.iterator;
       for (int i = 0; i < 50; i ++) {
-        expect(set.iterator.moveNext(), true);
-        expect(set.iterator.current, i);
+        expect(it.moveNext(), true);
+        expect(it.current, i);
       }
     });
   });
