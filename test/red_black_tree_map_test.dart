@@ -60,7 +60,7 @@ void main() {
       map.clear();
 
       expect(map.length, 0);
-      expect(map[0], false);
+      expect(map[0], null);
     });
   });
 
@@ -86,7 +86,7 @@ void main() {
 
       for (int i = 0; i < 50; i ++) {
         expect(map[i], i);
-        expect(map.remove(i), true);
+        expect(map.remove(i), i);
         expect(map[i], null);
         expect(map.length, 49 - i);
       }
