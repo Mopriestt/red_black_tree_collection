@@ -108,7 +108,38 @@ void main() {
   });
 
   group('test iterator', () {
-    test('iteration', () {
+    test('iterate keys', () {
+      addData(50);
+
+      int current = 0;
+      expect(map.keys.length, 50);
+      for (final key in map.keys) {
+        expect(key, current);
+        current++;
+      }
+    });
+
+    test('iterate values', () {
+      addData(50);
+
+      int current = 0;
+      expect(map.values.length, 50);
+      for (final value in map.values) {
+        expect(value, current);
+        current++;
+      }
+    });
+
+    test('iterate keys', () {
+      addData(50);
+
+      int current = 0;
+      expect(map.entries.length, 50);
+      for (final entry in map.entries) {
+        expect(entry.key, current);
+        expect(entry.value, current);
+        current++;
+      }
     });
   });
 
