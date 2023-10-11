@@ -119,4 +119,23 @@ void main() {
       }
     });
   });
+
+  group('test constructor', () {
+    test('from constructor', () {
+      addData(50);
+      final set2 = RBTreeSet<int>.from(set);
+      for (int i = 0; i < 50; i ++) {
+        expect(set2.contains(i), true);
+      }
+    });
+
+    test('of constructor', () {
+      addData(50);
+      final set2 = RBTreeSet.of(set);
+
+      for (int i = 0; i < 50; i ++) {
+        expect(set2.contains(i), true);
+      }
+    });
+  });
 }
