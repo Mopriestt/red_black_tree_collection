@@ -172,7 +172,7 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     return _validKey(key) && _findNode(key as dynamic) != null;
   }
 
-  void clear() {
+  void _clear() {
     _root = null;
     _count = 0;
   }

@@ -5,7 +5,7 @@ part of 'red_black_tree.dart';
 /// An [_RBTreeNode] that also contains a value,
 /// and which implements [MapEntry].
 class _RBTreeMapNode<K, V> extends _RBTreeNode<K, _RBTreeMapNode<K, V>> {
-  final V value;
+  V value;
   _RBTreeMapNode(K key, this.value) : super(key);
 }
 
@@ -13,19 +13,19 @@ class RBTreeMap<K, V> extends _RBTree<K, _RBTreeMapNode<K, V>>
     with MapMixin<K, V> {
   @override
   V? operator [](Object? key) {
-    // TODO: implement []
-    throw UnimplementedError();
+    if (!_validKey(key)) return null;
+    return _findNode(key as dynamic)?.value;
   }
 
   @override
   void operator []=(K key, V value) {
-    // TODO: implement []=
+    final node = _findNode(key);
+    if (node != null) node.value = value;
+    else _addNewNode(_RBTreeMapNode(key, value));
   }
 
   @override
-  void clear() {
-    // TODO: implement clear
-  }
+  void clear() => _clear();
 
   @override
   // TODO: implement keys
@@ -33,8 +33,8 @@ class RBTreeMap<K, V> extends _RBTree<K, _RBTreeMapNode<K, V>>
 
   @override
   V? remove(Object? key) {
-    // TODO: implement remove
-    throw UnimplementedError();
+    if (!_validKey(key)) return null;
+    return _removeNode(key as dynamic)?.value;
   }
 
   @override

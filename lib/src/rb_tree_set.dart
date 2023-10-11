@@ -118,10 +118,7 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
   }
 
   @override
-  void clear() {
-    _root = null;
-    _count = 0;
-  }
+  void clear() => _clear();
 
   @override
   bool remove(Object? value) {
