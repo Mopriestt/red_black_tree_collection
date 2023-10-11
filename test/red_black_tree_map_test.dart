@@ -131,7 +131,7 @@ void main() {
       }
     });
 
-    test('iterate keys', () {
+    test('iterate entries', () {
       addData(50);
 
       int current = 0;
