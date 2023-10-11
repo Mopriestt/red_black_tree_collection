@@ -37,7 +37,7 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
   RBTreeSet(
       [int Function(E key1, E key2)? compare,
         bool Function(dynamic potentialKey)? isValidKey])
-      : _compare = compare ?? defaultCompare<E>(),
+      : _compare = compare ?? _defaultCompare<E>(),
         _validKey = isValidKey ?? ((dynamic v) => v is E);
 
   /// Creates a [RBTreeSet] that contains all [elements].

@@ -11,6 +11,16 @@ class _RBTreeMapNode<K, V> extends _RBTreeNode<K, _RBTreeMapNode<K, V>> {
 
 class RBTreeMap<K, V> extends _RBTree<K, _RBTreeMapNode<K, V>>
     with MapMixin<K, V> {
+
+  Comparator<K> _compare;
+  Predicate _validKey;
+
+  RBTreeMap(
+      [int Function(K key1, K key2)? compare,
+        bool Function(dynamic potentialKey)? isValidKey])
+      : _compare = compare ?? _defaultCompare<K>(),
+        _validKey = isValidKey ?? ((dynamic a) => a is K);
+
   @override
   V? operator [](Object? key) {
     if (!_validKey(key)) return null;
@@ -36,12 +46,4 @@ class RBTreeMap<K, V> extends _RBTree<K, _RBTreeMapNode<K, V>>
     if (!_validKey(key)) return null;
     return _removeNode(key as dynamic)?.value;
   }
-
-  @override
-  // TODO: implement _compare
-  Comparator<K> get _compare => throw UnimplementedError();
-
-  @override
-  // TODO: implement _validKey
-  Predicate get _validKey => throw UnimplementedError();
 }

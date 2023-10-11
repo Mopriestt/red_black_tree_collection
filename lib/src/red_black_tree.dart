@@ -180,7 +180,7 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
 
 int _dynamicCompare(dynamic a, dynamic b) => Comparable.compare(a, b);
 
-Comparator<K> defaultCompare<K>() {
+Comparator<K> _defaultCompare<K>() {
   // If K <: Comparable, then we can just use Comparable.compare
   // with no casts.
   Object compare = Comparable.compare;
