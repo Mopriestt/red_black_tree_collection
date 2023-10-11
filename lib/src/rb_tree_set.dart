@@ -105,8 +105,7 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
 
   @override
   bool contains(Object? value) {
-    if (value is! E) return false;
-    return _findNode(value) != null;
+    return _containsKey(value);
   }
 
   @override

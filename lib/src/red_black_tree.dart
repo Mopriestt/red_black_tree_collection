@@ -168,6 +168,10 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     return current;
   }
 
+  bool _containsKey(Object? key) {
+    return _validKey(key) && _findNode(key as dynamic) != null;
+  }
+
   void clear() {
     _root = null;
     _count = 0;
