@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:math';
 
 import 'package:test/test.dart';
@@ -143,5 +144,13 @@ void main() {
     });
   });
 
-  group('test constructor', () {});
+  group('test constructor', () {
+    test('of constructor', () {
+      final map2 = RBTreeMap.of({1: 'one', 2: 'two', 3: 'three'});
+
+      expect(map2[1], 'one');
+      expect(map2[2], 'two');
+      expect(map2[3], 'three');
+    });
+  });
 }
