@@ -2,8 +2,7 @@ part of 'red_black_tree.dart';
 
 /// A node in a red black tree based map.
 ///
-/// An [_RBTreeNode] that also contains a value,
-/// and which implements [MapEntry].
+/// An [_RBTreeNode] that also contains a value which implements [MapEntry].
 class _RBTreeMapNode<K, V> extends _RBTreeNode<K, _RBTreeMapNode<K, V>> {
   V value;
 
@@ -78,6 +77,7 @@ class _RBTreeKeyIterable<K, Node extends _RBTreeNode<K, Node>>
   @override
   Iterator<K> get iterator => _RBTreeKeyIterator<K, Node>(_tree);
 
+  @override
   bool contains(Object? o) => _tree._containsKey(o);
 }
 

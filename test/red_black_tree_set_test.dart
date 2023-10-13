@@ -138,4 +138,15 @@ void main() {
       }
     });
   });
+
+  group('test comparator', () {
+    test('reverse order', () {
+      final set = RBTreeSet<int>((int a, int b) => b - a);
+      for (int i = 0; i < 50; i ++) set.add(i);
+
+      final inorder = set.toList();
+
+      for (int i = 0; i < 50; i ++) expect(inorder[i], 49 - i);
+    });
+  });
 }
