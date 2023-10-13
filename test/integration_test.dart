@@ -5,9 +5,10 @@ import 'package:collection/collection.dart';
 import 'package:red_black_tree_collection/red_black_tree.dart';
 import 'package:test/test.dart';
 
-const testCase = 10000;
-const N = 20000;
+const testCase = 20000;
+const N = 40000;
 final random = Random(DateTime.now().millisecondsSinceEpoch);
+int get randomNumber => random.nextInt(N);
 
 void main() {
   test('RBTreeSet vs SplayTreeSet', () {
@@ -25,17 +26,17 @@ void main() {
 
       switch (operation) {
         case 0: // Add a number
-          final v = random.nextInt(N);
+          final v = randomNumber;
           rbSet.add(v);
           splaySet.add(v);
           break;
         case 1: // Remove a number
-          final v = random.nextInt(N);
+          final v = randomNumber;
           rbSet.remove(v);
           splaySet.remove(v);
           break;
         case 2: // Test contains
-          final v = random.nextInt(N);
+          final v = randomNumber;
           expect(rbSet.contains(v), splaySet.contains(v));
           break;
       }
@@ -59,7 +60,7 @@ void main() {
 
     // Add initial data
     for (var i = 0; i <= N; i += 2) {
-      final v = random.nextInt(N);
+      final v = randomNumber;
       rbMap[i] = v;
       splayMap[i] = v;
     }
@@ -69,18 +70,18 @@ void main() {
 
       switch (operation) {
         case 0: // Add an entry
-          final k = random.nextInt(N);
-          final v = random.nextInt(N);
+          final k = randomNumber;
+          final v = randomNumber;
           rbMap[k] = v;
           splayMap[k] = v;
           break;
         case 1: // Remove an entry
-          final k = random.nextInt(N);
+          final k = randomNumber;
           rbMap.remove(k);
           splayMap.remove(k);
           break;
         case 2: // Test value
-          final k = random.nextInt(N);
+          final k = randomNumber;
           expect(rbMap[k], splayMap[k]);
           break;
       }
