@@ -39,6 +39,8 @@ void main() {
           expect(rbSet.contains(v), splaySet.contains(v));
           break;
       }
+
+      // Validate whole set for every 10% of operations.
       if (i % (testCase / 10) == 0) {
         expect(
           const ListEquality().equals(
@@ -82,6 +84,8 @@ void main() {
           expect(rbMap[k], splayMap[k]);
           break;
       }
+
+      // Validate whole map for every 10% of operations.
       if (i % (testCase / 10) == 0) {
         expect(
           const ListEquality().equals(
