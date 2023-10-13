@@ -1,10 +1,9 @@
-import 'dart:collection';
 import 'dart:math';
 
 import 'package:test/test.dart';
 import 'package:red_black_tree_collection/red_black_tree.dart';
 
-final random = Random(DateTime.now().millisecondsSinceEpoch);
+final _random = Random(DateTime.now().millisecondsSinceEpoch);
 
 void main() {
   late RBTreeSet<int> set;
@@ -14,7 +13,7 @@ void main() {
     assert(n > 0);
 
     final data = List.generate(n, (index) => index);
-    data.shuffle(random);
+    data.shuffle(_random);
 
     for (int i in data) set.add(i);
   }

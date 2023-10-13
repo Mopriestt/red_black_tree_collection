@@ -5,10 +5,10 @@ import 'package:collection/collection.dart';
 import 'package:red_black_tree_collection/red_black_tree.dart';
 import 'package:test/test.dart';
 
-const testCase = 20000;
-const N = 40000;
-final random = Random(DateTime.now().millisecondsSinceEpoch);
-int get _randomNumber => random.nextInt(N);
+const _testCase = 20000;
+const _testRange = 40000;
+final _random = Random(DateTime.now().millisecondsSinceEpoch);
+int get _randomNumber => _random.nextInt(_testRange);
 
 void main() {
   test('RBTreeSet vs SplayTreeSet', () {
@@ -16,13 +16,13 @@ void main() {
     final splaySet = SplayTreeSet<int>();
 
     // Add initial data
-    for (var i = 0; i <= N; i += 2) {
+    for (var i = 0; i <= _testRange; i += 2) {
       rbSet.add(i);
       splaySet.add(i);
     }
 
-    for (var i = 0; i < testCase; i++) {
-      final operation = random.nextInt(3);
+    for (var i = 0; i < _testCase; i++) {
+      final operation = _random.nextInt(3);
 
       switch (operation) {
         case 0: // Add a number
@@ -42,7 +42,7 @@ void main() {
       }
 
       // Validate whole set for every 10% of operations.
-      if (i % (testCase / 10) == 0) {
+      if (i % (_testCase / 10) == 0) {
         expect(
           const ListEquality().equals(
             rbSet.toList(),
@@ -59,14 +59,14 @@ void main() {
     final splayMap = SplayTreeMap<int, int>();
 
     // Add initial data
-    for (var i = 0; i <= N; i += 2) {
+    for (var i = 0; i <= _testRange; i += 2) {
       final v = _randomNumber;
       rbMap[i] = v;
       splayMap[i] = v;
     }
 
-    for (var i = 0; i < testCase; i++) {
-      final operation = random.nextInt(3);
+    for (var i = 0; i < _testCase; i++) {
+      final operation = _random.nextInt(3);
 
       switch (operation) {
         case 0: // Add an entry
@@ -87,7 +87,7 @@ void main() {
       }
 
       // Validate whole map for every 10% of operations.
-      if (i % (testCase / 10) == 0) {
+      if (i % (_testCase / 10) == 0) {
         expect(
           const ListEquality().equals(
             rbMap.keys.toList(),

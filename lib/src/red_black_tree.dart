@@ -14,6 +14,9 @@ class _RBTreeNode<K, Node extends _RBTreeNode<K, Node>> {
   bool color = true;
   Node? _left;
   Node? _right;
+  Node? _parent;
+  Node? get _grandParent => _parent?._parent;
+  bool get _isLeftChild => _parent?._left == this;
 
   _RBTreeNode(this.key);
 }
@@ -35,7 +38,12 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
 
     var newRoot = node._right!;
     node._right = newRoot._left;
+    newRoot._left?._parent = node;
     newRoot._left = node;
+    newRoot._parent = node._parent;
+    node._parent = newRoot;
+    if (newRoot._isLeftChild) newRoot._parent?._left = newRoot;
+    else newRoot._parent?._right = newRoot;
 
     return newRoot;
   }
@@ -45,7 +53,12 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
 
     var newRoot = node._left!;
     node._left = newRoot._right;
+    newRoot._right?._parent = node;
     newRoot._right = node;
+    newRoot._parent = node._parent;
+    node._parent = newRoot;
+    if (newRoot._isLeftChild) newRoot._parent?._left = newRoot;
+    else newRoot._parent?._right = newRoot;
 
     return newRoot;
   }
@@ -64,12 +77,14 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
       if (comp > 0) {
         if (current._left == null) {
           current._left = node;
+          node._parent = current;
           return true;
         }
         current = current._left!;
       } else {
         if (current._right == null) {
           current._right = node;
+          node._parent = current;
           return true;
         }
         current = current._right!;
@@ -79,27 +94,29 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
 
   Node? _naiveRemove(K key) {
     if (_root == null) return null;
-    Node? parent = null;
     Node current = _root!;
 
-    void removeNode(Node? parent, Node child) {
+    void removeNode(Node node) {
       Node? replaceChild;
-      if (child._left == null) {
-        replaceChild = child._right;
-        if (parent?._left == child) {
-          parent?._left = child._right;
+      final parent = node._parent;
+      if (node._left == null) {
+        replaceChild = node._right;
+        if (node._isLeftChild) {
+          parent?._left = node._right;
         } else {
-          parent?._right = child._right;
+          parent?._right = node._right;
         }
+        node._right?._parent = parent;
       } else {
-        replaceChild = child._left;
-        if (parent?._left == child) {
-          parent?._left = child._left;
+        replaceChild = node._left;
+        if (node._isLeftChild) {
+          parent?._left = node._left;
         } else {
-          parent?._right = child._left;
+          parent?._right = node._left;
         }
+        node._left?._parent = parent;
       }
-      if (child == _root) _root = replaceChild;
+      if (node == _root) _root = replaceChild;
       --_count;
     }
 
@@ -110,28 +127,18 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
         while (current._left != null && current._right != null) {
           if (current == _root) {
             _root = _rotateRight(current);
-            parent = _root;
             continue;
           }
-          if (parent?._right == current) {
-            parent?._right = _rotateRight(current);
-            parent = parent?._right;
-          }
-          else {
-            parent?._left = _rotateRight(current);
-            parent = parent?._left;
-          }
+          _rotateRight(current);
         }
-        removeNode(parent, current);
+        removeNode(current);
         return current;
       }
       if (comp < 0) {
         if (current._left == null) return null;
-        parent = current;
         current = current._left!;
       } else {
         if (current._right == null) return null;
-        parent = current;
         current = current._right!;
       }
     }
