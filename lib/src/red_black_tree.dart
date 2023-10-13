@@ -113,7 +113,14 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
             parent = _root;
             continue;
           }
-          parent = _rotateRight(current);
+          if (parent?._right == current) {
+            parent?._right = _rotateRight(current);
+            parent = parent?._right;
+          }
+          else {
+            parent?._left = _rotateRight(current);
+            parent = parent?._left;
+          }
         }
         removeNode(parent, current);
         return current;
