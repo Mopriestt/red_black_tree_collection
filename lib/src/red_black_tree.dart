@@ -76,14 +76,6 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     if (node == _root) _root = newRoot;
   }
 
-  void _rotateUp(Node node) {
-    assert(node._parent != null);
-    if (node._isLeftChild)
-      _rotateRight(node._parent!);
-    else
-      _rotateLeft(node._parent!);
-  }
-
   // Insert new node in the tree without fixing up red black properties.
   // Returns whether the node is inserted.
   bool _treeInsert(Node node) {
@@ -123,7 +115,6 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     node._color = _Color.red;
     while (node != _root && node._parent!._color == _Color.red) {
       if (node._parent!._isLeftChild) {
-        // TODO: pull out common logic.
         final uncle = node._uncle;
         if (uncle?._color == _Color.red) {
           node._parent!._color = _Color.black;
