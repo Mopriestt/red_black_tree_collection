@@ -36,6 +36,7 @@ void main() {
           splaySet.remove(v);
           break;
         case 2: // Test contains
+        case 3:
           final v = _randomNumber;
           expect(rbSet.contains(v), splaySet.contains(v));
           break;
@@ -81,6 +82,7 @@ void main() {
           splayMap.remove(k);
           break;
         case 2: // Test value
+        case 3:
           final k = _randomNumber;
           expect(rbMap[k], splayMap[k]);
           break;

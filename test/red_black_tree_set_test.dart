@@ -96,7 +96,7 @@ void main() {
     });
   });
 
-  group('test partial order', () {
+  group('test accessors', () {
     test('first', () {
       addData(50);
 
@@ -107,6 +107,11 @@ void main() {
       addData(50);
 
       expect(set.last, 49);
+    });
+
+    test('single', () {
+      set.add(1);
+      expect(set.single, 1);
     });
   });
 

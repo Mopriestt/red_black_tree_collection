@@ -20,6 +20,8 @@ class _RBTreeNode<K, Node extends _RBTreeNode<K, Node>> {
 
   bool get _isLeftChild => _parent?._left == this;
 
+  Node? get _sibling => _isLeftChild == true ? _parent?._right : _parent?._left;
+
   Node? get _grandParent => _parent?._parent;
 
   Node? get _uncle => _parent?._isLeftChild == true
@@ -122,7 +124,7 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
           node._grandParent!._color = _Color.red;
           node = node._grandParent!;
         } else {
-          if (!node._isLeftChild)  {
+          if (!node._isLeftChild) {
             node = node._parent!;
             _rotateLeft(node);
           }
