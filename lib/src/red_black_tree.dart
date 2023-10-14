@@ -1,22 +1,30 @@
 import 'dart:collection';
 
 part 'rb_tree_map.dart';
+
 part 'rb_tree_set.dart';
 
 typedef Predicate<T> = bool Function(T value);
+
+enum _Color { red, black }
 
 /// A node in a red black tree. It holds the sorting key and the left
 /// and right children in the tree.
 class _RBTreeNode<K, Node extends _RBTreeNode<K, Node>> {
   final K key;
 
-  // Color of node, true for red, false for black.
-  bool color = true;
+  _Color _color = _Color.red;
   Node? _left;
   Node? _right;
   Node? _parent;
-  Node? get _grandParent => _parent?._parent;
+
   bool get _isLeftChild => _parent?._left == this;
+
+  Node? get _grandParent => _parent?._parent;
+
+  Node? get _uncle => _parent?._isLeftChild == true
+      ? _grandParent?._right
+      : _grandParent?._left;
 
   _RBTreeNode(this.key);
 }
@@ -26,6 +34,7 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
   int _count = 0;
 
   Comparator<K> get _compare;
+
   Predicate get _validKey;
 
   /// Counter incremented whenever the keys in the map change.
@@ -33,8 +42,8 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
   /// Used to detect concurrent modifications.
   int _modificationCount = 0;
 
-  Node _rotateLeft(Node node) {
-    if (node._right == null) return node;
+  void _rotateLeft(Node node) {
+    assert(node._right != null);
 
     var newRoot = node._right!;
     node._right = newRoot._left;
@@ -42,14 +51,16 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     newRoot._left = node;
     newRoot._parent = node._parent;
     node._parent = newRoot;
-    if (newRoot._isLeftChild) newRoot._parent?._left = newRoot;
-    else newRoot._parent?._right = newRoot;
+    if (newRoot._parent?._left == node)
+      newRoot._parent?._left = newRoot;
+    else
+      newRoot._parent?._right = newRoot;
 
-    return newRoot;
+    if (node == _root) _root = newRoot;
   }
 
-  Node _rotateRight(Node node) {
-    if (node._left == null) return node;
+  void _rotateRight(Node node) {
+    assert(node._left != null);
 
     var newRoot = node._left!;
     node._left = newRoot._right;
@@ -57,13 +68,25 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     newRoot._right = node;
     newRoot._parent = node._parent;
     node._parent = newRoot;
-    if (newRoot._isLeftChild) newRoot._parent?._left = newRoot;
-    else newRoot._parent?._right = newRoot;
+    if (newRoot._parent?._left == node)
+      newRoot._parent?._left = newRoot;
+    else
+      newRoot._parent?._right = newRoot;
 
-    return newRoot;
+    if (node == _root) _root = newRoot;
   }
 
-  bool _addNewNode(Node node) {
+  void _rotateUp(Node node) {
+    assert(node._parent != null);
+    if (node._isLeftChild)
+      _rotateRight(node._parent!);
+    else
+      _rotateLeft(node._parent!);
+  }
+
+  // Insert new node in the tree without fixing up red black properties.
+  // Returns whether the node is inserted.
+  bool _treeInsert(Node node) {
     _count++;
     if (_root == null) {
       _root = node;
@@ -73,7 +96,10 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     var current = _root!;
     while (true) {
       var comp = _compare(current.key, node.key);
-      if (comp == 0) return false;
+      if (comp == 0) {
+        _count--;
+        return false;
+      }
       if (comp > 0) {
         if (current._left == null) {
           current._left = node;
@@ -90,6 +116,58 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
         current = current._right!;
       }
     }
+  }
+
+  // Reference: https://www.cs.auckland.ac.nz/software/AlgAnim/red_black.html
+  void _fixRedBlackProperties(Node node) {
+    node._color = _Color.red;
+    while (node != _root && node._parent!._color == _Color.red) {
+      if (node._parent!._isLeftChild) {
+        // TODO: pull out common logic.
+        final uncle = node._uncle;
+        if (uncle?._color == _Color.red) {
+          node._parent!._color = _Color.black;
+          uncle!._color = _Color.black;
+          node._grandParent!._color = _Color.red;
+          node = node._grandParent!;
+        } else {
+          if (!node._isLeftChild)  {
+            node = node._parent!;
+            _rotateLeft(node);
+          }
+          node._parent!._color = _Color.black;
+          node._grandParent!._color = _Color.red;
+          _rotateRight(node._grandParent!);
+        }
+      } else {
+        final uncle = node._uncle;
+        if (uncle?._color == _Color.red) {
+          node._parent!._color = _Color.black;
+          uncle!._color = _Color.black;
+          node._grandParent!._color = _Color.red;
+          node = node._grandParent!;
+        } else {
+          if (node._isLeftChild) {
+            node = node._parent!;
+            _rotateRight(node);
+          }
+          node._parent!._color = _Color.black;
+          node._grandParent!._color = _Color.red;
+          _rotateLeft(node._grandParent!);
+        }
+      }
+    }
+    _root!._color = _Color.black;
+  }
+
+  bool _addNewNode(Node node) {
+    // Return false if same key already exists in the tree.
+    if (!_treeInsert(node)) return false;
+
+    // Fix-up the red black property for the new node inserted.
+    _fixRedBlackProperties(node);
+
+    return true;
   }
 
   Node? _naiveRemove(K key) {
@@ -125,10 +203,6 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
       if (comp == 0) {
         // Push down
         while (current._left != null && current._right != null) {
-          if (current == _root) {
-            _root = _rotateRight(current);
-            continue;
-          }
           _rotateRight(current);
         }
         removeNode(current);
@@ -160,7 +234,7 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     return null;
   }
 
-  Node? get _firstNode  {
+  Node? get _firstNode {
     if (_root == null) return null;
     var current = _root!;
 
@@ -189,6 +263,7 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
   void _clear() {
     _root = null;
     _count = 0;
+    _modificationCount++;
   }
 }
 
@@ -269,5 +344,6 @@ abstract class _RBTreeIterator<K, Node extends _RBTreeNode<K, Node>, T>
 class _RBTreeKeyIterator<K, Node extends _RBTreeNode<K, Node>>
     extends _RBTreeIterator<K, Node, K> {
   _RBTreeKeyIterator(_RBTree<K, Node> tree) : super(tree);
+
   K _getValue(Node node) => node.key;
 }

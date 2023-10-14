@@ -5,8 +5,8 @@ import 'package:collection/collection.dart';
 import 'package:red_black_tree_collection/red_black_tree.dart';
 import 'package:test/test.dart';
 
-const _testCase = 20000;
-const _testRange = 40000;
+const _testCase = 200000;
+const _testRange = 400000;
 final _random = Random(DateTime.now().millisecondsSinceEpoch);
 int get _randomNumber => _random.nextInt(_testRange);
 

@@ -98,9 +98,7 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
 
   @override
   bool add(E value) {
-    if (_findNode(value) != null) return false;
-    _addNewNode(_RBTreeSetNode(value));
-    return true;
+    return _addNewNode(_RBTreeSetNode(value));
   }
 
   @override

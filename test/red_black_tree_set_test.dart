@@ -15,24 +15,27 @@ void main() {
     final data = List.generate(n, (index) => index);
     data.shuffle(_random);
 
-    for (int i in data) set.add(i);
+    for (int i in data) {
+      set.add(i);
+    }
   }
 
   group('test add', () {
+    const n = 50;
     test('simple add', () {
-      addData(50);
+      addData(n);
 
-      for (int i = 0; i < 50; i ++) expect(set.contains(i), true);
-      expect(set.contains(50), false);
+      for (int i = 0; i < n; i ++) expect(set.contains(i), true);
+      expect(set.contains(n), false);
     });
 
     test('duplicate add', () {
-      addData(50);
-      addData(50);
+      addData(n);
+      addData(n);
 
-      expect(set.length, 50);
-      for (int i = 0; i < 50; i ++) expect(set.contains(i), true);
-      expect(set.contains(50), false);
+      expect(set.length, n);
+      for (int i = 0; i < n; i ++) expect(set.contains(i), true);
+      expect(set.contains(n), false);
     });
   });
 
