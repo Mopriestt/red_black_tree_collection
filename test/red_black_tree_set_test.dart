@@ -25,7 +25,7 @@ void main() {
     test('simple add', () {
       addData(n);
 
-      for (int i = 0; i < n; i ++) expect(set.contains(i), true);
+      for (int i = 0; i < n; i++) expect(set.contains(i), true);
       expect(set.contains(n), false);
     });
 
@@ -34,7 +34,7 @@ void main() {
       addData(n);
 
       expect(set.length, n);
-      for (int i = 0; i < n; i ++) expect(set.contains(i), true);
+      for (int i = 0; i < n; i++) expect(set.contains(i), true);
       expect(set.contains(n), false);
     });
   });
@@ -87,7 +87,7 @@ void main() {
     test('delete all', () {
       addData(50);
 
-      for (int i = 0; i < 50; i ++) {
+      for (int i = 0; i < 50; i++) {
         expect(set.contains(i), true);
         expect(set.remove(i), true);
         expect(set.contains(i), false);
@@ -120,7 +120,7 @@ void main() {
       addData(50);
 
       final it = set.iterator;
-      for (int i = 0; i < 50; i ++) {
+      for (int i = 0; i < 50; i++) {
         expect(it.moveNext(), true);
         expect(it.current, i);
       }
@@ -131,7 +131,7 @@ void main() {
     test('from constructor', () {
       addData(50);
       final set2 = RBTreeSet<int>.from(set);
-      for (int i = 0; i < 50; i ++) {
+      for (int i = 0; i < 50; i++) {
         expect(set2.contains(i), true);
       }
     });
@@ -140,7 +140,7 @@ void main() {
       addData(50);
       final set2 = RBTreeSet.of(set);
 
-      for (int i = 0; i < 50; i ++) {
+      for (int i = 0; i < 50; i++) {
         expect(set2.contains(i), true);
       }
     });
@@ -149,11 +149,35 @@ void main() {
   group('test comparator', () {
     test('reverse order', () {
       final set = RBTreeSet<int>((int a, int b) => b - a);
-      for (int i = 0; i < 50; i ++) set.add(i);
+      for (int i = 0; i < 50; i++) set.add(i);
 
       final inorder = set.toList();
 
-      for (int i = 0; i < 50; i ++) expect(inorder[i], 49 - i);
+      for (int i = 0; i < 50; i++) expect(inorder[i], 49 - i);
+    });
+  });
+
+  group('test search', () {
+    test('first after', () {
+      for (int i = 0; i <= 100; i += 2) set.add(i);
+
+      for (int i = -1; i <= 101; i++) {
+        if (i >= 100)
+          expect(set.firstAfter(i), null);
+        else
+          expect(set.firstAfter(i), i + 2 >> 1 << 1);
+      }
+    });
+
+    test('last before', () {
+      for (int i = 0; i <= 100; i += 2) set.add(i);
+
+      for (int i = -1; i <= 101; i++) {
+        if (i <= 0)
+          expect(set.lastBefore(i), null);
+        else
+          expect(set.lastBefore(i), i - 1 >> 1 << 1);
+      }
     });
   });
 }

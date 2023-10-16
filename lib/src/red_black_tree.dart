@@ -112,15 +112,13 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     }
   }
 
-  // Reference: https://www.cs.auckland.ac.nz/software/AlgAnim/red_black.html
-  void _fixRedBlackProperties(Node node) {
+  void _fixInsert(Node node) {
     node._color = _Color.red;
     while (node != _root && node._parent!._color == _Color.red) {
       if (node._parent!._isLeftChild) {
-        final uncle = node._uncle;
-        if (uncle?._color == _Color.red) {
+        if (node._uncle?._color == _Color.red) {
           node._parent!._color = _Color.black;
-          uncle!._color = _Color.black;
+          node._uncle!._color = _Color.black;
           node._grandParent!._color = _Color.red;
           node = node._grandParent!;
         } else {
@@ -133,10 +131,9 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
           _rotateRight(node._grandParent!);
         }
       } else {
-        final uncle = node._uncle;
-        if (uncle?._color == _Color.red) {
+        if (node._uncle?._color == _Color.red) {
           node._parent!._color = _Color.black;
-          uncle!._color = _Color.black;
+          node._uncle!._color = _Color.black;
           node._grandParent!._color = _Color.red;
           node = node._grandParent!;
         } else {
@@ -158,7 +155,7 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     if (!_treeInsert(node)) return false;
 
     // Fix-up the red black property for the new node inserted.
-    _fixRedBlackProperties(node);
+    _fixInsert(node);
 
     return true;
   }
@@ -251,6 +248,44 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
 
   bool _containsKey(Object? key) {
     return _validKey(key) && _findNode(key as dynamic) != null;
+  }
+
+  Node? _lastNodeBefore(K key) {
+    if (_root == null) return null;
+    Node? current = _root;
+    Node? target;
+
+    while (current != null) {
+      if (_compare(current.key, key) < 0) {
+        if (target == null || _compare(target.key, current.key) < 0) {
+          target = current;
+        }
+        current = current._right;
+      } else {
+        current = current._left;
+      }
+    }
+
+    return target;
+  }
+
+  Node? _firstNodeAfter(K key) {
+    if (_root == null) return null;
+    Node? current = _root;
+    Node? target;
+
+    while (current != null) {
+      if (_compare(current.key, key) > 0) {
+        if (target == null || _compare(target.key, current.key) > 0) {
+          target = current;
+        }
+        current = current._left;
+      } else {
+        current = current._right;
+      }
+    }
+
+    return target;
   }
 
   void _clear() {

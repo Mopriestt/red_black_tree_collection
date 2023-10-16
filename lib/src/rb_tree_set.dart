@@ -137,4 +137,8 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
     if (_count == 0) throw Exception();
     return _lastNode!.key;
   }
+
+  E? firstAfter(E object) => _firstNodeAfter(object)?.key;
+
+  E? lastBefore(E object) => _lastNodeBefore(object)?.key;
 }

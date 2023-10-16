@@ -152,4 +152,28 @@ void main() {
       expect(map2[3], 'three');
     });
   });
+
+  group('test search', () {
+    test('first key after', () {
+      for (int i = 0; i <= 100; i += 2) map[i] = i;
+
+      for (int i = -1; i <= 101; i++) {
+        if (i >= 100)
+          expect(map.firstKeyAfter(i), null);
+        else
+          expect(map.firstKeyAfter(i), i + 2 >> 1 << 1);
+      }
+    });
+
+    test('last key before', () {
+      for (int i = 0; i <= 100; i += 2) map[i] = i;
+
+      for (int i = -1; i <= 101; i++) {
+        if (i <= 0)
+          expect(map.lastKeyBefore(i), null);
+        else
+          expect(map.lastKeyBefore(i), i - 1 >> 1 << 1);
+      }
+    });
+  });
 }

@@ -57,6 +57,10 @@ class RBTreeMap<K, V> extends _RBTree<K, _RBTreeMapNode<K, V>>
   @override
   void clear() => _clear();
 
+  K? lastKeyBefore(K key) => _lastNodeBefore(key)?.key;
+
+  K? firstKeyAfter(K key) => _firstNodeAfter(key)?.key;
+
   Iterable<K> get keys => _RBTreeKeyIterable<K, _RBTreeMapNode<K, V>>(this);
 
   Iterable<V> get values => _RBTreeValueIterable<K, V>(this);
