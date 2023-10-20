@@ -68,7 +68,6 @@ Benchmarking testing code can be found and reproduced at: https://github.com/Mop
 |                     Test case                      |  SplayTreeSet  |  RBTreeSet  |  Improvement  |
 |:--------------------------------------------------:|:--------------:|:-----------:|:-------------:|
 |         1 million insert + 1 million find          |     4266ms     |   2028ms    |     110%      |
-| :------------------------------------------------: | :------------: | :---------: | :-----------: |
 |   1 million insert + 2 million mixed remove/find   |     7131ms     |   3544ms    |     101%      |
 
 #### Multiple Set Test
