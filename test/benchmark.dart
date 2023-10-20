@@ -76,12 +76,12 @@ void main() {
         splayTreeSet.add(s);
       }
 
-      for (int i = 0; i < _N; i ++) {
+      for (int i = 0; i < _N; i++) {
         splayTreeSet.remove(deleteSet[i]);
         splayTreeSet.contains(data[querySet[i]]);
       }
       var end = DateTime.now().millisecondsSinceEpoch;
-      print('\nSplayTreeSet 1 million add + 1 million search:');
+      print('\nSplayTreeSet 1 million add + 2 million mixed delete & search:');
       print('${end - start} ms');
     });
 
@@ -92,42 +92,48 @@ void main() {
         rbTreeSet.add(s);
       }
 
-      for (int i = 0; i < _N; i ++) {
+      for (int i = 0; i < _N; i++) {
         rbTreeSet.remove(deleteSet[i]);
         rbTreeSet.contains(data[querySet[i]]);
       }
       var end = DateTime.now().millisecondsSinceEpoch;
-      print('\nRbTreeSet 1 million add + 1 million search:');
+      print('\nRbTreeSet 1 million add + 2 million mixed delete & search:');
       print('${end - start} ms');
     });
   });
 
-  group('memory test', () {
-    test('SplayTreeSet memory test', () {
-      final sets = [
-        for (int i = 0; i < 1000; i++)
-          SplayTreeSet<String>.from(data.sublist(i * 1000, i * 1000 + 1000))
-      ];
-
-      print(sets.length);
+  group('speed test with 1000 individual instances', () {
+    const dataCase = 2000;
+    final data = List.generate(
+      dataCase,
+      (_) => List.generate(dataCase, (index) => _random.nextInt(_N)),
+    );
+    test('2000 SplayTreeSets with 2000 add + query', () {
+      var start = DateTime.now().millisecondsSinceEpoch;
+      final sets = List.generate(dataCase, (_) => SplayTreeSet<int>());
+      for (int i = 0; i < dataCase; i++) {
+        for (int j = 0; j < dataCase; j ++)
+          sets[i].add(data[i][j]);
+        for (int j = 0; j < dataCase; j ++)
+          sets[i].contains(data[i][j]);
+      }
+      var end = DateTime.now().millisecondsSinceEpoch;
+      print('\n2000 SplayTreeSets with 2000 add + 2000 query each:');
+      print('${end - start} ms');
     });
 
-    test('RBTreeSet memory test', () {
-      final sets = [
-        for (int i = 0; i < 1000; i++)
-          RBTreeSet<String>.from(data.sublist(i * 1000, i * 1000 + 1000))
-      ];
-
-      print(sets.length);
-    });
-
-    test('HashSet memory test', () {
-      final sets = [
-        for (int i = 0; i < 1000; i++)
-          HashSet<String>.from(data.sublist(i * 1000, i * 1000 + 1000))
-      ];
-
-      print(sets.length);
+    test('2000 RBTreeSets with 2000 add + query', () {
+      var start = DateTime.now().millisecondsSinceEpoch;
+      final sets = List.generate(dataCase, (_) => RBTreeSet<int>());
+      for (int i = 0; i < dataCase; i++) {
+        for (int j = 0; j < dataCase; j ++)
+          sets[i].add(data[i][j]);
+        for (int j = 0; j < dataCase; j ++)
+          sets[i].contains(data[i][j]);
+      }
+      var end = DateTime.now().millisecondsSinceEpoch;
+      print('\n2000 RBTreeSets with 2000 add + 2000 query each:');
+      print('${end - start} ms');
     });
   });
 }

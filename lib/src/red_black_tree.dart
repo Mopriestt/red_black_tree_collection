@@ -49,15 +49,27 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
 
   void _swapPositionAndColor(Node a, Node b) {
     Node? t;
-    if (a._isLeftChild) a._parent?._left = b;
-    else a._parent?._right = b;
-    if (b._isLeftChild) b._parent?._left = a;
-    else b._parent?._right = a;
+    if (a._isLeftChild)
+      a._parent?._left = b;
+    else
+      a._parent?._right = b;
+    if (b._isLeftChild)
+      b._parent?._left = a;
+    else
+      b._parent?._right = a;
 
-    t = a._parent; a._parent = b._parent; b._parent = t;
-    t = a._left; a._left = b._left; b._left = t;
-    t = a._right; a._right = b._right; b._right = t;
-    final c = a._color; a._color = b._color; b._color = c;
+    t = a._parent;
+    a._parent = b._parent;
+    b._parent = t;
+    t = a._left;
+    a._left = b._left;
+    b._left = t;
+    t = a._right;
+    a._right = b._right;
+    b._right = t;
+    final c = a._color;
+    a._color = b._color;
+    b._color = c;
   }
 
   void _rotateLeft(Node node) {
@@ -176,7 +188,63 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     return true;
   }
 
-  void _naiveRemove(Node node) {
+  void _fixDelete(Node node) {
+    while (node != _root && node._color == _Color.black) {
+      var sibling = node._sibling;
+      if (node._isLeftChild) {
+        if (sibling?._color == _Color.red) {
+          sibling!._color = _Color.black;
+          node._parent!._color = _Color.red;
+          _rotateLeft(node._parent!);
+          sibling = node._parent?._right;
+        }
+        if ((sibling?._left?._color ?? _Color.black) == _Color.black &&
+            (sibling?._right?._color ?? _Color.black) == _Color.black) {
+          sibling?._color = _Color.red;
+          node = node._parent!;
+        } else {
+          if ((sibling?._right?._color ?? _Color.black) == _Color.black) {
+            sibling?._left?._color = _Color.black;
+            sibling?._color = _Color.red;
+            _rotateRight(sibling!);
+            sibling = node._parent?._right;
+          }
+          sibling?._color = node._parent!._color;
+          node._parent?._color = _Color.black;
+          sibling?._right?._color = _Color.black;
+          _rotateLeft(node._parent!);
+          node = _root!;
+        }
+      } else {
+        if (sibling?._color == _Color.red) {
+          sibling!._color = _Color.black;
+          node._parent!._color = _Color.red;
+          _rotateRight(node._parent!);
+          sibling = node._parent?._left;
+        }
+        if ((sibling?._right?._color ?? _Color.black) == _Color.black &&
+            (sibling?._left?._color ?? _Color.black) == _Color.black) {
+          sibling?._color = _Color.red;
+          node = node._parent!;
+        } else {
+          if ((sibling?._left?._color ?? _Color.black) == _Color.black) {
+            sibling?._right?._color = _Color.black;
+            sibling?._color = _Color.red;
+            _rotateLeft(sibling!);
+            sibling = node._parent?._left;
+          }
+          sibling?._color = node._parent!._color;
+          node._parent?._color = _Color.black;
+          sibling?._left?._color = _Color.black;
+          _rotateRight(node._parent!);
+          node = _root!;
+        }
+      }
+    }
+    node._color = _Color.black;
+  }
+
+  Node? _deleteNodeWithZeroOrOneChild(Node node) {
     Node? replaceChild;
     final parent = node._parent;
     if (node._left == null) {
@@ -198,19 +266,16 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     }
     if (node == _root) _root = replaceChild;
     --_count;
-  }
-
-  void _deleteNodeWithZeroOrOneChild(Node node) {
-    _naiveRemove(node);
+    return replaceChild;
   }
 
   Node? _removeNode(K key) {
     var node = _findNode(key);
     if (node == null) return null;
-    final returnNode = node._clone;
+    var returnNode = node;
 
-    // Randomly replace current node with successor or predecessor.
     if (node._left != null && node._right != null) {
+      // Randomly replace current node with successor or predecessor.
       late Node replacement;
       if (node.hashCode & 1 == 0) {
         replacement = node._left!;
@@ -219,11 +284,13 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
         replacement = node._right!;
         while (replacement._left != null) replacement = replacement._left!;
       }
+      returnNode = node._clone;
       node._copyDateFrom(replacement);
       node = replacement;
     }
 
-    _deleteNodeWithZeroOrOneChild(node);
+    var fixNode = _deleteNodeWithZeroOrOneChild(node);
+    if (fixNode != null) _fixDelete(fixNode);
     return returnNode;
   }
 
