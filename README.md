@@ -57,11 +57,24 @@ Additional Functionality: This library provides efficient implementation of bina
 ```
 
 ## Performance Benchmarking
-|                       Test case                       | SplayTreeSet | RBTreeSet | Improvement |
-|:-----------------------------------------------------:|:------------:|:---------:|:-----------:|
-|        1 million add() + 1 million contains()         |    4266ms    |  2028ms   |    110%     |
-| 1 million add() + 2 million mixed remove()/contains() |    7131ms    |  3544ms   |    101%     |
-| 2k individual sets with 2k add() + 2k contains() each |    2533ms    |  1420ms   |     78%     |
+
+Benching marking are done with same data set doing same operations on RBTreeSet and SplayTreeSet separately.
+Each element in the data set is a length 10 random lowercase string.
+
+Benchmarking testing code can be found and reproduced at: https://github.com/Mopriestt/red_black_tree_collection/blob/master/test/benchmark.dart 
+
+### Single Set Test
+
+|                    Test case                     | SplayTreeSet | RBTreeSet | Improvement |
+|:------------------------------------------------:|:------------:|:---------:|:-----------:|
+|        1 million insert + 1 million find         |    4266ms    |  2028ms   |    110%     |
+|  1 million insert + 2 million mixed remove/find  |    7131ms    |  3544ms   |    101%     |
+
+### Multiple Set Test
+
+|                    Test case                     | SplayTreeSet | RBTreeSet | Improvement |
+|:------------------------------------------------:|:------------:|:---------:|:-----------:|
+| 2k individual sets with 2k insert + 2k find each |    2533ms    |  1420ms   |     78%     |
 
 ## Source Code
 https://github.com/Mopriestt/red_black_tree_collection
