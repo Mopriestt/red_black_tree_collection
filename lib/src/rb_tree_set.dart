@@ -3,6 +3,9 @@ part of 'red_black_tree.dart';
 /// A node in a red black tree based set.
 class _RBTreeSetNode<K> extends _RBTreeNode<K, _RBTreeSetNode<K>> {
   _RBTreeSetNode(K key) : super(key);
+
+  @override
+  _RBTreeSetNode<K> get _clone => _RBTreeSetNode<K>(key);
 }
 
 class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>

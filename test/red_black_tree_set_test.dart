@@ -88,6 +88,7 @@ void main() {
       addData(50);
 
       for (int i = 0; i < 50; i++) {
+        expect(set.contains(i - 1), false);
         expect(set.contains(i), true);
         expect(set.remove(i), true);
         expect(set.contains(i), false);

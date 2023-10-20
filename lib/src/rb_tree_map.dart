@@ -7,6 +7,15 @@ class _RBTreeMapNode<K, V> extends _RBTreeNode<K, _RBTreeMapNode<K, V>> {
   V value;
 
   _RBTreeMapNode(K key, this.value) : super(key);
+
+  @override
+  void _copyDateFrom(_RBTreeMapNode<K, V> other) {
+    key = other.key;
+    value = other.value;
+  }
+
+  @override
+  _RBTreeMapNode<K, V> get _clone => _RBTreeMapNode<K, V>(key, value);
 }
 
 class RBTreeMap<K, V> extends _RBTree<K, _RBTreeMapNode<K, V>>
@@ -52,6 +61,7 @@ class RBTreeMap<K, V> extends _RBTree<K, _RBTreeMapNode<K, V>>
   V? remove(Object? key) {
     if (!_validKey(key)) return null;
     return _removeNode(key as dynamic)?.value;
+
   }
 
   @override

@@ -78,8 +78,7 @@ void main() {
           break;
         case 1: // Remove an entry
           final k = _randomNumber;
-          rbMap.remove(k);
-          splayMap.remove(k);
+          expect(rbMap.remove(k), splayMap.remove(k));
           break;
         case 2: // Test value
         case 3:

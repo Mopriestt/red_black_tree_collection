@@ -18,7 +18,7 @@ List<String> get _dataSet => List.generate(_N, (_) => _randomString);
 void main() {
   final data = _dataSet;
 
-  group('speed test', () {
+  group('speed test add', () {
     test('SplayTreeSet 1 million add + 1 million query', () {
       var start = DateTime.now().millisecondsSinceEpoch;
       final splayTreeSet = SplayTreeSet<String>();
@@ -61,6 +61,43 @@ void main() {
       }
       var end = DateTime.now().millisecondsSinceEpoch;
       print('\nHashSet 1 million add + 1 million search:');
+      print('${end - start} ms');
+    });
+  });
+
+  group('speed test mixed', () {
+    final deleteSet = List.generate(_N, (index) => data[_random.nextInt(_N)]);
+    final querySet = List.generate(_N, (index) => _random.nextInt(_N));
+
+    test('SplayTreeSet 1 million add + 1 million delete + 1 million query', () {
+      var start = DateTime.now().millisecondsSinceEpoch;
+      final splayTreeSet = SplayTreeSet<String>();
+      for (final s in data) {
+        splayTreeSet.add(s);
+      }
+
+      for (int i = 0; i < _N; i ++) {
+        splayTreeSet.remove(deleteSet[i]);
+        splayTreeSet.contains(data[querySet[i]]);
+      }
+      var end = DateTime.now().millisecondsSinceEpoch;
+      print('\nSplayTreeSet 1 million add + 1 million search:');
+      print('${end - start} ms');
+    });
+
+    test('RBTreeSet 1 million add + 1 million delete + 1 million query', () {
+      var start = DateTime.now().millisecondsSinceEpoch;
+      final rbTreeSet = RBTreeSet<String>();
+      for (final s in data) {
+        rbTreeSet.add(s);
+      }
+
+      for (int i = 0; i < _N; i ++) {
+        rbTreeSet.remove(deleteSet[i]);
+        rbTreeSet.contains(data[querySet[i]]);
+      }
+      var end = DateTime.now().millisecondsSinceEpoch;
+      print('\nRbTreeSet 1 million add + 1 million search:');
       print('${end - start} ms');
     });
   });

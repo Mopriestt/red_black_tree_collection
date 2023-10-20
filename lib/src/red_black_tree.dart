@@ -10,8 +10,8 @@ enum _Color { red, black }
 
 /// A node in a red black tree. It holds the sorting key and the left
 /// and right children in the tree.
-class _RBTreeNode<K, Node extends _RBTreeNode<K, Node>> {
-  final K key;
+abstract class _RBTreeNode<K, Node extends _RBTreeNode<K, Node>> {
+  K key;
 
   _Color _color = _Color.red;
   Node? _left;
@@ -29,6 +29,9 @@ class _RBTreeNode<K, Node extends _RBTreeNode<K, Node>> {
       : _grandParent?._left;
 
   _RBTreeNode(this.key);
+
+  void _copyDateFrom(Node other) => key = other.key;
+  Node get _clone;
 }
 
 abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
@@ -43,6 +46,19 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
   ///
   /// Used to detect concurrent modifications.
   int _modificationCount = 0;
+
+  void _swapPositionAndColor(Node a, Node b) {
+    Node? t;
+    if (a._isLeftChild) a._parent?._left = b;
+    else a._parent?._right = b;
+    if (b._isLeftChild) b._parent?._left = a;
+    else b._parent?._right = a;
+
+    t = a._parent; a._parent = b._parent; b._parent = t;
+    t = a._left; a._left = b._left; b._left = t;
+    t = a._right; a._right = b._right; b._right = t;
+    final c = a._color; a._color = b._color; b._color = c;
+  }
 
   void _rotateLeft(Node node) {
     assert(node._right != null);
@@ -160,56 +176,55 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     return true;
   }
 
-  Node? _naiveRemove(K key) {
-    if (_root == null) return null;
-    Node current = _root!;
-
-    void removeNode(Node node) {
-      Node? replaceChild;
-      final parent = node._parent;
-      if (node._left == null) {
-        replaceChild = node._right;
-        if (node._isLeftChild) {
-          parent?._left = node._right;
-        } else {
-          parent?._right = node._right;
-        }
-        node._right?._parent = parent;
+  void _naiveRemove(Node node) {
+    Node? replaceChild;
+    final parent = node._parent;
+    if (node._left == null) {
+      replaceChild = node._right;
+      if (node._isLeftChild) {
+        parent?._left = node._right;
       } else {
-        replaceChild = node._left;
-        if (node._isLeftChild) {
-          parent?._left = node._left;
-        } else {
-          parent?._right = node._left;
-        }
-        node._left?._parent = parent;
+        parent?._right = node._right;
       }
-      if (node == _root) _root = replaceChild;
-      --_count;
-    }
-
-    while (true) {
-      var comp = _compare(key, current.key);
-      if (comp == 0) {
-        // Push down
-        while (current._left != null && current._right != null) {
-          _rotateRight(current);
-        }
-        removeNode(current);
-        return current;
-      }
-      if (comp < 0) {
-        if (current._left == null) return null;
-        current = current._left!;
+      node._right?._parent = parent;
+    } else {
+      replaceChild = node._left;
+      if (node._isLeftChild) {
+        parent?._left = node._left;
       } else {
-        if (current._right == null) return null;
-        current = current._right!;
+        parent?._right = node._left;
       }
+      node._left?._parent = parent;
     }
+    if (node == _root) _root = replaceChild;
+    --_count;
+  }
+
+  void _deleteNodeWithZeroOrOneChild(Node node) {
+    _naiveRemove(node);
   }
 
   Node? _removeNode(K key) {
-    return _naiveRemove(key);
+    var node = _findNode(key);
+    if (node == null) return null;
+    final returnNode = node._clone;
+
+    // Randomly replace current node with successor or predecessor.
+    if (node._left != null && node._right != null) {
+      late Node replacement;
+      if (node.hashCode & 1 == 0) {
+        replacement = node._left!;
+        while (replacement._right != null) replacement = replacement._right!;
+      } else {
+        replacement = node._right!;
+        while (replacement._left != null) replacement = replacement._left!;
+      }
+      node._copyDateFrom(replacement);
+      node = replacement;
+    }
+
+    _deleteNodeWithZeroOrOneChild(node);
+    return returnNode;
   }
 
   Node? _findNode(K key) {
