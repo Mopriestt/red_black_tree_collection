@@ -6,7 +6,7 @@ import 'dart:collection';
 import 'dart:math';
 
 import 'package:collection/collection.dart';
-import 'package:red_black_tree_collection/red_black_tree.dart';
+import 'package:red_black_tree_collection/red_black_tree_collection.dart';
 import 'package:test/test.dart';
 
 const _testCase = 300000;

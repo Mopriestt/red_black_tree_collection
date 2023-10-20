@@ -1,4 +1,4 @@
-import 'package:red_black_tree_collection/red_black_tree.dart';
+import 'package:red_black_tree_collection/red_black_tree_collection.dart';
 
 void main() {
   /// RBTreeSet

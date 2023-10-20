@@ -5,7 +5,7 @@
 import 'dart:collection';
 import 'dart:math';
 
-import 'package:red_black_tree_collection/red_black_tree.dart';
+import 'package:red_black_tree_collection/red_black_tree_collection.dart';
 import 'package:test/test.dart';
 
 final _random = Random(DateTime.now().millisecondsSinceEpoch);
