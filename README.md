@@ -2,13 +2,13 @@ This Dart library offers Red-Black Tree based Set and Map data structures that p
 
 ## Features
 
-Basic Functionalities: Offers all standard Map and Set functionalities as defined in Dart's interface.
+**Basic Functionality**: Offers all standard Map and Set functionalities as defined in Dart's interface.
 
-Ordering: The Red-Black Tree Set and Map maintain a balanced structure, ensuring that elements are ordered efficiently within the collection.
+**Ordering**: The Red-Black Tree Set and Map maintain a balanced structure, ensuring that elements are ordered efficiently within the collection.
 
-Performance: The Red-Black Tree implementation outperforms Dart's `SplayTreeMap` and `SplayTreeSet` in terms of search, insertion, and deletion operations.
+**Performance**: The Red-Black Tree implementation outperforms Dart's `SplayTreeMap` and `SplayTreeSet` in terms of search, insertion, and deletion operations.
 
-Additional Functionality: This library provides efficient implementation of binary searching based on keys:
+**Additional Functionality**: This library provides efficient implementation of binary searching based on keys:
  - `firstAfter` and `lastBefore` on RBTreeSet.
  - `firstKeyAfter` and `lastKeyBefore` on RBTreeMap.
 
@@ -65,10 +65,10 @@ Benchmarking testing code can be found and reproduced at: https://github.com/Mop
 
 #### Single Set Test
 
-|                     Test case                      |  SplayTreeSet  |  RBTreeSet  |  Improvement  |
-|:--------------------------------------------------:|:--------------:|:-----------:|:-------------:|
-|         1 million insert + 1 million find          |     4266ms     |   2028ms    |     110%      |
-|   1 million insert + 2 million mixed remove/find   |     7131ms     |   3544ms    |     101%      |
+| Test case                                         |  SplayTreeSet  |  RBTreeSet  |  Improvement  |
+|:--------------------------------------------------|:--------------:|:-----------:|:-------------:|
+| 1 million insert + 1 million find                 |     4266ms     |   2028ms    |     110%      |
+| 1 million insert + 2 million mixed remove/find    |     7131ms     |   3544ms    |     101%      |
 
 #### Multiple Set Test
 
