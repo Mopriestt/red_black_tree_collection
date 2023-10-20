@@ -52,21 +52,6 @@ void main() {
       print('\nRbTreeSet 1 million add + 1 million search:');
       print('${end - start} ms');
     });
-
-    test('HashSet 1 million add + 1 million query', () {
-      var start = DateTime.now().millisecondsSinceEpoch;
-      final hashSet = HashSet<String>();
-      for (final s in data) {
-        hashSet.add(s);
-      }
-
-      for (final s in data) {
-        hashSet.contains(s);
-      }
-      var end = DateTime.now().millisecondsSinceEpoch;
-      print('\nHashSet 1 million add + 1 million search:');
-      print('${end - start} ms');
-    });
   });
 
   group('speed test mixed', () {
