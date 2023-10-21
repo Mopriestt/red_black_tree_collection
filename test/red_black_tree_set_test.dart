@@ -185,4 +185,39 @@ void main() {
       }
     });
   });
+
+  group('test ConcurrentModificationError', () {
+    test('add while iterating', () {
+      addData(10);
+      try {
+        for (final x in set) {
+          set.add(10);
+        }
+      } catch (e) {
+        expect(e is ConcurrentModificationError, true);
+      }
+    });
+
+    test('delete while iterating', () {
+      addData(10);
+      try {
+        for (final x in set) {
+          set.remove(5);
+        }
+      } catch (e) {
+        expect(e is ConcurrentModificationError, true);
+      }
+    });
+
+    test('clear while iterating', () {
+      addData(10);
+      try {
+        for (final x in set) {
+          set.clear();
+        }
+      } catch (e) {
+        expect(e is ConcurrentModificationError, true);
+      }
+    });
+  });
 }
