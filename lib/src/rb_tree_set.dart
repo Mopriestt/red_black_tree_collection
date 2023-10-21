@@ -152,7 +152,7 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
 
   @override
   bool remove(Object? element) {
-    if (_validKey(element)) return false;
+    if (!_validKey(element)) return false;
     return _removeNode(element as E) != null;
   }
 
