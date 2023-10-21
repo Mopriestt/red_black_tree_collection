@@ -51,31 +51,6 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
   /// Used to detect concurrent modifications.
   int _modificationCount = 0;
 
-  void _swapPositionAndColor(Node a, Node b) {
-    Node? t;
-    if (a._isLeftChild)
-      a._parent?._left = b;
-    else
-      a._parent?._right = b;
-    if (b._isLeftChild)
-      b._parent?._left = a;
-    else
-      b._parent?._right = a;
-
-    t = a._parent;
-    a._parent = b._parent;
-    b._parent = t;
-    t = a._left;
-    a._left = b._left;
-    b._left = t;
-    t = a._right;
-    a._right = b._right;
-    b._right = t;
-    final c = a._color;
-    a._color = b._color;
-    b._color = c;
-  }
-
   void _rotateLeft(Node node) {
     assert(node._right != null);
 
@@ -189,6 +164,7 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     // Fix-up the red black property for the new node inserted.
     _fixInsert(node);
 
+    _modificationCount++;
     return true;
   }
 
@@ -295,6 +271,7 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
 
     var fixNode = _deleteNodeWithZeroOrOneChild(node);
     if (fixNode != null) _fixDelete(fixNode);
+    _modificationCount++;
     return returnNode;
   }
 

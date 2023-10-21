@@ -43,7 +43,7 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
   /// type parameter: `other is E`.
   RBTreeSet(
       [int Function(E key1, E key2)? compare,
-        bool Function(dynamic potentialKey)? isValidKey])
+      bool Function(dynamic potentialKey)? isValidKey])
       : _compare = compare ?? _defaultCompare<E>(),
         _validKey = isValidKey ?? ((dynamic v) => v is E);
 
@@ -68,7 +68,7 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
   /// ```
   factory RBTreeSet.from(Iterable elements,
       [int Function(E key1, E key2)? compare,
-        bool Function(dynamic potentialKey)? isValidKey]) {
+      bool Function(dynamic potentialKey)? isValidKey]) {
     if (elements is Iterable<E>) {
       return RBTreeSet<E>.of(elements, compare, isValidKey);
     }
@@ -91,8 +91,8 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
   /// print(setOf); // {1, 2, 3}
   /// ```
   factory RBTreeSet.of(Iterable<E> elements,
-      [int Function(E key1, E key2)? compare,
-        bool Function(dynamic potentialKey)? isValidKey]) =>
+          [int Function(E key1, E key2)? compare,
+          bool Function(dynamic potentialKey)? isValidKey]) =>
       RBTreeSet(compare, isValidKey)..addAll(elements);
 
   Set<T> _newSet<T>() =>
@@ -101,7 +101,37 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
   Set<R> cast<R>() => Set.castFrom<E, R>(this, newSet: _newSet);
 
   @override
+  Iterator<E> get iterator => _RBTreeKeyIterator<E, _RBTreeSetNode<E>>(this);
+
+  @override
   int get length => _count;
+
+  @override
+  bool get isEmpty => _root == null;
+
+  @override
+  bool get isNotEmpty => _root != null;
+
+  @override
+  E get first {
+    // TODO: Customize exceptions.
+    if (_count == 0) throw Exception();
+    return _firstNode!.key;
+  }
+
+  @override
+  E get last {
+    // TODO: Customize exceptions.
+    if (_count == 0) throw Exception();
+    return _lastNode!.key;
+  }
+
+  @override
+  E get single {
+    if (_count == 0) throw Exception();
+    if (_count > 1) throw Exception();
+    return _root!.key;
+  }
 
   @override
   bool add(E value) {
@@ -112,9 +142,6 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
   bool contains(Object? value) {
     return _containsKey(value);
   }
-
-  @override
-  Iterator<E> get iterator => _RBTreeKeyIterator<E, _RBTreeSetNode<E>>(this);
 
   @override
   E? lookup(Object? object) {
@@ -129,20 +156,6 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
   bool remove(Object? value) {
     if (value is! E) return false;
     return _removeNode(value) != null;
-  }
-
-  @override
-  E get first {
-    // TODO: Customize exceptions.
-    if (_count == 0) throw Exception();
-    return _firstNode!.key;
-  }
-
-  @override
-  E get last {
-    // TODO: Customize exceptions.
-    if (_count == 0) throw Exception();
-    return _lastNode!.key;
   }
 
   E? firstAfter(E object) => _firstNodeAfter(object)?.key;
