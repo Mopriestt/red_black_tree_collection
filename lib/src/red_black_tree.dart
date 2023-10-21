@@ -60,10 +60,11 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     newRoot._left = node;
     newRoot._parent = node._parent;
     node._parent = newRoot;
-    if (newRoot._parent?._left == node)
+    if (newRoot._parent?._left == node) {
       newRoot._parent?._left = newRoot;
-    else
+    } else {
       newRoot._parent?._right = newRoot;
+    }
 
     if (node == _root) _root = newRoot;
   }
@@ -77,10 +78,11 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     newRoot._right = node;
     newRoot._parent = node._parent;
     node._parent = newRoot;
-    if (newRoot._parent?._left == node)
+    if (newRoot._parent?._left == node) {
       newRoot._parent?._left = newRoot;
-    else
+    } else {
       newRoot._parent?._right = newRoot;
+    }
 
     if (node == _root) _root = newRoot;
   }

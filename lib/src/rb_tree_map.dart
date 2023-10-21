@@ -55,10 +55,12 @@ class RBTreeMap<K, V> extends _RBTree<K, _RBTreeMapNode<K, V>>
   @override
   void operator []=(K key, V value) {
     final node = _findNode(key);
-    if (node != null)
+    if (node != null) {
       node.value = value;
-    else
+    }
+    else {
       _addNewNode(_RBTreeMapNode(key, value));
+    }
   }
 
   @override
