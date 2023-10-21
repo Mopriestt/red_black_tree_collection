@@ -38,6 +38,39 @@ void main() {
       for (int i = 0; i < 50; i ++) expect(map[i], i);
       expect(map[50], null);
     });
+
+    test('putIfAbsent', () {
+      addData(50);
+
+      for (int i = 0; i < 100; i ++) {
+        map.putIfAbsent(i, () => i);
+      }
+
+      for (int i = 0; i < 100; i ++) {
+        expect(map[i], i);
+      }
+    });
+  });
+
+  group('test update', () {
+    test('update', () {
+      addData(50);
+
+      for (int i = 0; i < 100; i ++)
+        map.update(i, (value) => -value, ifAbsent: () => -i);
+
+      for (int i = 0; i < 100; i ++)
+        expect(map[i], -i);
+    });
+
+    test('updateAll', () {
+      addData(50);
+
+      map.updateAll((key, value) => key * value);
+
+      for (int i = 0; i < 50; i ++)
+        expect(map[i], i * i);
+    });
   });
 
   group('test clear', () {

@@ -65,7 +65,6 @@ class RBTreeMap<K, V> extends _RBTree<K, _RBTreeMapNode<K, V>>
   V? remove(Object? key) {
     if (!_validKey(key)) return null;
     return _removeNode(key as dynamic)?.value;
-
   }
 
   @override
