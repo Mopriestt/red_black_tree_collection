@@ -191,7 +191,7 @@ void main() {
     test('add while iterating', () {
       addData(10);
       try {
-        for (final x in set) {
+        for (final _ in set) {
           set.add(10);
         }
       } catch (e) {
@@ -202,7 +202,7 @@ void main() {
     test('delete while iterating', () {
       addData(10);
       try {
-        for (final x in set) {
+        for (final _ in set) {
           set.remove(5);
         }
       } catch (e) {
@@ -213,7 +213,7 @@ void main() {
     test('clear while iterating', () {
       addData(10);
       try {
-        for (final x in set) {
+        for (final _ in set) {
           set.clear();
         }
       } catch (e) {
@@ -228,9 +228,8 @@ void main() {
       final b = RBTreeSet.of(<int>[2, 6, 4]);
 
       expect(
-        const ListEquality().equals(a.union(b).toList(), [1, 2, 3, 4, 5, 6]),
-        true
-      );
+          const ListEquality().equals(a.union(b).toList(), [1, 2, 3, 4, 5, 6]),
+          true);
     });
 
     test('intersection', () {
@@ -238,8 +237,8 @@ void main() {
       final b = RBTreeSet.of(<int>[4, 5, 6, 7]);
 
       expect(
-          const ListEquality().equals(a.intersection(b).toList(), [4, 5]),
-          true
+        const ListEquality().equals(a.intersection(b).toList(), [4, 5]),
+        true,
       );
     });
 
@@ -248,8 +247,8 @@ void main() {
       final b = RBTreeSet.of(<int>[4, 5, 6, 7]);
 
       expect(
-          const ListEquality().equals(a.difference(b).toList(), [1, 2, 3]),
-          true
+        const ListEquality().equals(a.difference(b).toList(), [1, 2, 3]),
+        true,
       );
     });
   });
