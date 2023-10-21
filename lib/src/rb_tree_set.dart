@@ -166,4 +166,34 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
   E? firstAfter(E object) => _firstNodeAfter(object)?.key;
 
   E? lastBefore(E object) => _lastNodeBefore(object)?.key;
+
+  @override
+  Set<E> intersection(Set<Object?> other) {
+    Set<E> result = RBTreeSet<E>(_compare, _validKey);
+    for (E element in this) {
+      if (other.contains(element)) result.add(element);
+    }
+    return result;
+  }
+
+  @override
+  Set<E> difference(Set<Object?> other) {
+    Set<E> result = RBTreeSet<E>(_compare, _validKey);
+    for (E element in this) {
+      if (!other.contains(element)) result.add(element);
+    }
+    return result;
+  }
+
+  @override
+  Set<E> union(Set<E> other) {
+    Set<E> result = RBTreeSet<E>(_compare, _validKey);
+    for (E element in this) {
+      result.add(element);
+    }
+    for (E element in other) {
+      if (!result.contains(element)) result.add(element);
+    }
+    return result;
+  }
 }

@@ -4,6 +4,7 @@
 
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:test/test.dart';
 import 'package:red_black_tree_collection/red_black_tree_collection.dart';
 
@@ -218,6 +219,38 @@ void main() {
       } catch (e) {
         expect(e is ConcurrentModificationError, true);
       }
+    });
+  });
+
+  group('test set operations', () {
+    test('union', () {
+      final a = RBTreeSet<int>.from([1, 5, 3]);
+      final b = RBTreeSet.of(<int>[2, 6, 4]);
+
+      expect(
+        const ListEquality().equals(a.union(b).toList(), [1, 2, 3, 4, 5, 6]),
+        true
+      );
+    });
+
+    test('intersection', () {
+      final a = RBTreeSet<int>.from([1, 2, 4, 5]);
+      final b = RBTreeSet.of(<int>[4, 5, 6, 7]);
+
+      expect(
+          const ListEquality().equals(a.intersection(b).toList(), [4, 5]),
+          true
+      );
+    });
+
+    test('difference', () {
+      final a = RBTreeSet<int>.from([1, 2, 3, 4, 5]);
+      final b = RBTreeSet.of(<int>[4, 5, 6, 7]);
+
+      expect(
+          const ListEquality().equals(a.difference(b).toList(), [1, 2, 3]),
+          true
+      );
     });
   });
 }
