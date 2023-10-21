@@ -132,13 +132,13 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
   }
 
   @override
-  bool add(E value) {
-    return _addNewNode(_RBTreeSetNode(value));
+  bool add(E element) {
+    return _addNewNode(_RBTreeSetNode(element));
   }
 
   @override
-  bool contains(Object? value) {
-    return _containsKey(value);
+  bool contains(Object? element) {
+    return _validKey(element) && _containsKey(element);
   }
 
   @override
@@ -151,9 +151,16 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
   void clear() => _clear();
 
   @override
-  bool remove(Object? value) {
-    if (value is! E) return false;
-    return _removeNode(value) != null;
+  bool remove(Object? element) {
+    if (_validKey(element)) return false;
+    return _removeNode(element as E) != null;
+  }
+
+  @override
+  void removeAll(Iterable<Object?> elements) {
+    for (Object? element in elements) {
+      if (_validKey(element)) _removeNode(element as E);
+    }
   }
 
   E? firstAfter(E object) => _firstNodeAfter(object)?.key;
