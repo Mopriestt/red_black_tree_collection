@@ -65,16 +65,16 @@ Benchmarking testing code can be found and reproduced at: https://github.com/Mop
 
 #### Single Set Test
 
-| Test case                                         |  SplayTreeSet  |  RBTreeSet  |  Improvement  |
-|:--------------------------------------------------|:--------------:|:-----------:|:-------------:|
-| 1 million insert + 1 million find                 |     4266ms     |   2028ms    |     110%      |
-| 1 million insert + 2 million mixed remove/find    |     7131ms     |   3544ms    |     101%      |
+| Test case                                         | SplayTreeSet | RBTreeSet | Improvement |
+|:--------------------------------------------------|:------------:|:---------:|:-----------:|
+| 1 million insert + 1 million find                 |   ~4266ms    |  ~2028ms  |    ~110%    |
+| 1 million insert + 2 million mixed remove/find    |   ~7131ms    |  ~3544ms  |    ~101%    |
 
 #### Multiple Set Test
 
-|                    Test case                     | SplayTreeSet | RBTreeSet | Improvement |
-|:------------------------------------------------:|:------------:|:---------:|:-----------:|
-| 2k individual sets with 2k insert + 2k find each |    2533ms    |  1420ms   |     78%     |
+|                     Test case                      | SplayTreeSet | RBTreeSet | Improvement |
+|:--------------------------------------------------:|:------------:|:---------:|:-----------:|
+| 1000 individual sets with 5k insert + 5k find each |   ~3744ms    |  ~1896ms  |    ~97%     |
 
 ## Source Code
 https://github.com/Mopriestt/red_black_tree_collection

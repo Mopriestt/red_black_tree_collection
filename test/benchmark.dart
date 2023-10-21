@@ -92,36 +92,36 @@ void main() {
   });
 
   group('speed test with 1000 individual instances', () {
-    const dataCase = 2000;
+    const dataCase = 1000;
     final data = List.generate(
       dataCase,
-      (_) => List.generate(dataCase, (index) => _random.nextInt(_N)),
+      (_) => List.generate(5000, (index) => _random.nextInt(_N)),
     );
-    test('2000 SplayTreeSets with 2000 add + query', () {
+    test('1000 SplayTreeSets with 5000 add + 5000 query', () {
       var start = DateTime.now().millisecondsSinceEpoch;
       final sets = List.generate(dataCase, (_) => SplayTreeSet<int>());
       for (int i = 0; i < dataCase; i++) {
-        for (int j = 0; j < dataCase; j ++)
+        for (int j = 0; j < 5000; j ++)
           sets[i].add(data[i][j]);
-        for (int j = 0; j < dataCase; j ++)
+        for (int j = 0; j < 5000; j ++)
           sets[i].contains(data[i][j]);
       }
       var end = DateTime.now().millisecondsSinceEpoch;
-      print('\n2000 SplayTreeSets with 2000 add + 2000 query each:');
+      print('\n1000 SplayTreeSets with 5000 add + 5000 query each:');
       print('${end - start} ms');
     });
 
-    test('2000 RBTreeSets with 2000 add + query', () {
+    test('1000 RBTreeSets with 5000 add + 5000 query', () {
       var start = DateTime.now().millisecondsSinceEpoch;
       final sets = List.generate(dataCase, (_) => RBTreeSet<int>());
       for (int i = 0; i < dataCase; i++) {
-        for (int j = 0; j < dataCase; j ++)
+        for (int j = 0; j < 5000; j ++)
           sets[i].add(data[i][j]);
-        for (int j = 0; j < dataCase; j ++)
+        for (int j = 0; j < 5000; j ++)
           sets[i].contains(data[i][j]);
       }
       var end = DateTime.now().millisecondsSinceEpoch;
-      print('\n2000 RBTreeSets with 2000 add + 2000 query each:');
+      print('\n1000 RBTreeSets with 5000 add + 5000 query each:');
       print('${end - start} ms');
     });
   });
