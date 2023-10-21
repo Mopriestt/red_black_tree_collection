@@ -6,9 +6,9 @@ This Dart library offers Red-Black Tree based Set and Map data structures that p
 
 **Ordering**: The Red-Black Tree Set and Map maintain a balanced structure, ensuring that elements are ordered efficiently within the collection.
 
-**Performance**: The Red-Black Tree implementation outperforms Dart's `SplayTreeMap` and `SplayTreeSet` in terms of search, insertion, and deletion operations.
+**Performance**: The Red-Black Tree implementation outperforms Dart's `SplayTreeMap` and `SplayTreeSet` in terms of search, insertion, and deletion operations by ~100%.
 
-**Additional Functionality**: This library provides efficient implementation of binary searching based on keys:
+**Additional Functionality**: This library provides efficient implementation of binary searching on keys:
  - `firstAfter` and `lastBefore` on RBTreeSet.
  - `firstKeyAfter` and `lastKeyBefore` on RBTreeMap.
 
@@ -19,7 +19,7 @@ This Dart library offers Red-Black Tree based Set and Map data structures that p
 ```dart
   final treeMap = RBTreeMap<String, int>(
   // Support custom comparator
-  // Use case insensitive string compare.
+  // Using case insensitive string compare.
       (a, b) => a.toLowerCase().compareTo(b.toLowerCase()),
   );
   treeMap['john'] = 30;
@@ -78,3 +78,7 @@ Benchmarking testing code can be found and reproduced at: https://github.com/Mop
 
 ## Source Code
 https://github.com/Mopriestt/red_black_tree_collection
+
+
+## Pub Dev
+https://pub.dev/packages/red_black_tree_collection

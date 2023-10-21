@@ -1,6 +1,6 @@
 name: red_black_tree_collection
-description: Red black tree based set and map for Dart.
-version: 0.0.1
+description: Efficient Red-Black Tree based Set and Map data structures that provide ordered collections with efficient search, insertion, and deletion operations.
+version: 1.0.0
 homepage: https://github.com/Mopriestt/red_black_tree_collection
 
 environment:
