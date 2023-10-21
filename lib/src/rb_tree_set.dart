@@ -114,22 +114,20 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
 
   @override
   E get first {
-    // TODO: Customize exceptions.
-    if (_count == 0) throw Exception();
+    if (_count == 0) throw IterableElementError.noElement();
     return _firstNode!.key;
   }
 
   @override
   E get last {
-    // TODO: Customize exceptions.
-    if (_count == 0) throw Exception();
+    if (_count == 0) throw IterableElementError.noElement();
     return _lastNode!.key;
   }
 
   @override
   E get single {
-    if (_count == 0) throw Exception();
-    if (_count > 1) throw Exception();
+    if (_count == 0) throw IterableElementError.noElement();
+    if (_count == 0) throw IterableElementError.tooMany();
     return _root!.key;
   }
 

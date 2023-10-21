@@ -438,3 +438,10 @@ class _RBTreeKeyIterator<K, Node extends _RBTreeNode<K, Node>>
 
   K _getValue(Node node) => node.key;
 }
+
+abstract class IterableElementError {
+  /** Error thrown by, e.g., [Iterable.first] when there is no result. */
+  static StateError noElement() => StateError("No element");
+  /** Error thrown by, e.g., [Iterable.single] if there are too many results. */
+  static StateError tooMany() => StateError("Too many elements");
+}
