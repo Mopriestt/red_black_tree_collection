@@ -261,10 +261,14 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
       late Node replacement;
       if (node.hashCode & 1 == 0) {
         replacement = node._left!;
-        while (replacement._right != null) replacement = replacement._right!;
+        while (replacement._right != null) {
+          replacement = replacement._right!;
+        }
       } else {
         replacement = node._right!;
-        while (replacement._left != null) replacement = replacement._left!;
+        while (replacement._left != null) {
+          replacement = replacement._left!;
+        }
       }
       returnNode = node._clone;
       node._copyDateFrom(replacement);

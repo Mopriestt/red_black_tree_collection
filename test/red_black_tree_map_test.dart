@@ -213,4 +213,62 @@ void main() {
       }
     });
   });
+
+  group('test ConcurrentModificationError', () {
+    var errorThrown = false;
+    setUp(() => errorThrown = false);
+
+    test('add while iterating keys', () {
+      addData(10);
+      try {
+        for (final _ in map.keys) {
+          map[10] = 11;
+        }
+      } catch (e) {
+        errorThrown = true;
+        expect(e is ConcurrentModificationError, true);
+      }
+      expect(errorThrown, true);
+    });
+
+    test('delete while iterating entries', () {
+      addData(10);
+      try {
+        for (final _ in map.entries) {
+          map.remove(5);
+        }
+      } catch (e) {
+        errorThrown = true;
+        expect(e is ConcurrentModificationError, true);
+      }
+      expect(errorThrown, true);
+    });
+
+    test('clear while iterating values', () {
+      addData(10);
+      try {
+        for (final _ in map.values) {
+          map.clear();
+        }
+      } catch (e) {
+        errorThrown = true;
+        expect(e is ConcurrentModificationError, true);
+      }
+      expect(errorThrown, true);
+    });
+
+    test('modify tree structure while update', () {
+      addData(10);
+      try {
+        map.update(5, (v) {
+          map[10] = 100; // Adding a new node, change tree structure.
+          return v * v;
+        });
+      } catch (e) {
+        errorThrown = true;
+        expect(e is ConcurrentModificationError, true);
+      }
+      expect(errorThrown, true);
+    });
+  });
 }

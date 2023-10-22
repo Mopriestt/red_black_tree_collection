@@ -69,6 +69,29 @@ class RBTreeMap<K, V> extends _RBTree<K, _RBTreeMapNode<K, V>>
     return _removeNode(key as dynamic)?.value;
   }
 
+  V update(K key, V update(V value), {V Function()? ifAbsent}) {
+    final node = _findNode(key);
+    if (node != null) {
+      var modificationCount = _modificationCount;
+      var newValue = update(node.value);
+      if (modificationCount != _modificationCount) {
+        throw ConcurrentModificationError(this);
+      }
+      node.value = newValue;
+      return newValue;
+    }
+    if (ifAbsent != null) {
+      var modificationCount = _modificationCount;
+      var newValue = ifAbsent();
+      if (modificationCount != _modificationCount) {
+        throw ConcurrentModificationError(this);
+      }
+      _addNewNode(_RBTreeMapNode(key, newValue));
+      return newValue;
+    }
+    throw ArgumentError.value(key, "key", "Key not in map.");
+  }
+
   @override
   void clear() => _clear();
 
