@@ -1,3 +1,7 @@
+## 1.1.0
+
+* Support RBTreeMap concurrent update error detection.
+
 ## 1.0.0
 
 * Custom iterable exception.

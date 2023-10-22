@@ -1,4 +1,4 @@
-This Dart library offers Red-Black Tree based Set and Map data structures that provide ordered collections with efficient search, insertion, and deletion operations.
+This Dart library offers high performance Red-Black Tree based Set and Map data structures that provide ordered collections with efficient search, insertion, and deletion operations.
 
 ## Features
 
@@ -17,51 +17,76 @@ This Dart library offers Red-Black Tree based Set and Map data structures that p
 ### RBTreeMap
 
 ```dart
-  final treeMap = RBTreeMap<String, int>(
-  // Support custom comparator
-  // Using case insensitive string compare.
-      (a, b) => a.toLowerCase().compareTo(b.toLowerCase()),
-  );
-  treeMap['john'] = 30;
-  treeMap['BoB'] = 20;
-  treeMap['Kevin'] = 31;
+    final treeMap = RBTreeMap<String, int>(
+      // Example of custom comparator
+      // Use case insensitive string compare.
+          (a, b) => a.toLowerCase().compareTo(b.toLowerCase()),
+    );
 
-  print(treeMap['BoB']); // 20;
-  treeMap.remove('BoB');
-  print(treeMap['BoB']); // null;
-
-  treeMap.addAll(const {'alice': 18, 'Charles': 70});
-
-  print(treeMap.keys.toList()); // [alice, Charles, john, Kevin]
-  print(treeMap.values.toList()); // [18, 70, 30, 31]
-
-  print(treeMap.firstKeyAfter('Alice')); // Charles
-  print(treeMap.lastKeyBefore('Nobody')); // Kevin
+    // add
+    treeMap['john'] = 30;
+    treeMap['BoB'] = 20;
+    treeMap['Kevin'] = 31;
+    
+    // remove
+    print(treeMap['BoB']); // 20
+    treeMap.remove('BoB');
+    print(treeMap['BoB']); // null
+    
+    // add from other map
+    treeMap.addAll(const {'alice': 18, 'Charles': 70});
+    
+    // to pre-sorted list
+    print(treeMap.keys.toList()); // [alice, Charles, john, Kevin]
+    print(treeMap.values.toList()); // [18, 70, 30, 31]
+    print(treeMap.entrys.toList()); // [MapEntry(alice: 18), MapEntry(Charles: 70), MapEntry(john: 30), MapEntry(Kevin: 31)]
+    
+    // binary search key
+    print(treeMap.firstKeyAfter('Alice')); // 'Charles'
+    print(treeMap.lastKeyBefore('Nobody')); // 'Kevin'
+    
+    for (MapEntry<String, int> entry in treeMap.entries) {
+      // Iterate through all (key, value) pair in key sorted order.
+    }
 ```
 
 ### RBTreeSet
 
 ```dart
-  // final treeSet = RBTreeSet.from([10, 20, 30, 7, 1, 3, 5]);
-  final treeSet = RBTreeSet<int>();
-  treeSet.addAll([10, 20, 30, 7, 1, 3, 5]);
+    final treeSet = RBTreeSet<int>();
+    // alternative constructor
+    // final treeSet = RBTreeSet.from([10, 20, 30, 7, 1, 3, 5]);
+  
+    // add
+    treeSet.add(5);
+    treeSet.addAll([10, 20, 30, 7, 1, 3]);
 
-  print(treeSet.contains(3)); // true
-  print(treeSet.contains(100)); // false;
+    // lookup
+    print(treeSet.contains(3)); // true
+    print(treeSet.contains(100)); // false;
+    print(treeSet.lookup(30)); // 30
+    print(treeSet.lookup(45.0)); // null
 
-  print(treeSet.firstAfter(15)); // 20
-  print(treeSet.lastBefore(10)); // 7
+    // binary search element
+    print(treeSet.firstAfter(15)); // 20
+    print(treeSet.lastBefore(10)); // 7
 
-  treeSet.removeAll([1, 7, 30]);
-  print(treeSet.toList()); // [3, 5, 10, 20]
+    // remove
+    treeSet.removeAll([1, 7, 30]);
+
+    // to pre-sorted list
+    print(treeSet.toList()); // [3, 5, 10, 20]
+
+    for (int element in treeSet) {
+      // Iterate through all elements in sorted order.
+    }
 ```
 
 ## Performance Benchmarking
 
-Benching marking are done with same data set doing same operations on RBTreeSet and SplayTreeSet separately.
-Each element in the data set is a length 10 random lowercase string.
+Benchmarking are done with same data set doing same operations on RBTreeSet and SplayTreeSet separately.
 
-Benchmarking testing code can be found and reproduced at: https://github.com/Mopriestt/red_black_tree_collection/blob/master/test/benchmark.dart 
+Code to reproduce the performance metrics can be found [here](https://github.com/Mopriestt/red_black_tree_collection/blob/master/test/benchmark.dart).
 
 #### Single Set Test
 
@@ -76,9 +101,6 @@ Benchmarking testing code can be found and reproduced at: https://github.com/Mop
 |:--------------------------------------------------:|:------------:|:---------:|:-----------:|
 | 1000 individual sets with 5k insert + 5k find each |   ~3744ms    |  ~1896ms  |    ~97%     |
 
-## Source Code
-https://github.com/Mopriestt/red_black_tree_collection
+## Misc
 
-
-## Pub Dev
-https://pub.dev/packages/red_black_tree_collection
+### [Source Code](https://github.com/Mopriestt/red_black_tree_collection) and [pub.dev Link](https://pub.dev/packages/red_black_tree_collection)
