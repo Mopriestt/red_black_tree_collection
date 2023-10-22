@@ -188,6 +188,9 @@ void main() {
   });
 
   group('test ConcurrentModificationError', () {
+    late bool errorThrown;
+    setUp(() => errorThrown = false);
+
     test('add while iterating', () {
       addData(10);
       try {
@@ -196,7 +199,9 @@ void main() {
         }
       } catch (e) {
         expect(e is ConcurrentModificationError, true);
+        errorThrown = true;
       }
+      expect(errorThrown, true);
     });
 
     test('delete while iterating', () {
@@ -207,7 +212,9 @@ void main() {
         }
       } catch (e) {
         expect(e is ConcurrentModificationError, true);
+        errorThrown = true;
       }
+      expect(errorThrown, true);
     });
 
     test('clear while iterating', () {
@@ -218,7 +225,9 @@ void main() {
         }
       } catch (e) {
         expect(e is ConcurrentModificationError, true);
+        errorThrown = true;
       }
+      expect(errorThrown, true);
     });
   });
 
