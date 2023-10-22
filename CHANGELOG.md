@@ -1,6 +1,8 @@
 ## 1.1.0
 
+* README and api doc update.
 * Support RBTreeMap concurrent update error detection.
+* More tests and some minor fixes.
 
 ## 1.0.0
 
