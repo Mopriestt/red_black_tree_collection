@@ -95,8 +95,27 @@ class RBTreeMap<K, V> extends _RBTree<K, _RBTreeMapNode<K, V>>
   @override
   void clear() => _clear();
 
+  /// Returns the largest key in the map that is smaller than the given [key]
+  /// in O(log n) time. If no such key is found, returns `null`.
+  ///
+  /// Example:
+  /// ```dart
+  /// final treeMap = RBTreeMap<int, String>()..addAll({3: 'A', 7: 'B', 10: 'C'});
+  /// print(treeMap.lastKeyBefore(8)); // Output: 7
+  /// print(treeMap.lastKeyBefore(1)); // Output: null
+  /// ```
   K? lastKeyBefore(K key) => _lastNodeBefore(key)?.key;
 
+  /// Returns the smallest key in the map that is greater than the given [key]
+  /// in O(log n) time. If no such key is found, returns `null`.
+  ///
+  /// Example:
+  /// ```dart
+  /// final treeMap = RBTreeMap<int, String>()..addAll({3: 'A', 7: 'B', 10: 'C'});
+  /// print(treeMap.firstKeyAfter(6)); // Output: 7
+  /// print(treeMap.firstKeyAfter(10)); // Output: null
+  /// ```
+  ///
   K? firstKeyAfter(K key) => _firstNodeAfter(key)?.key;
 
   Iterable<K> get keys => _RBTreeKeyIterable<K, _RBTreeMapNode<K, V>>(this);

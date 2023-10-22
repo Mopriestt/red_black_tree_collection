@@ -163,9 +163,29 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
     }
   }
 
-  E? firstAfter(E object) => _firstNodeAfter(object)?.key;
+  /// Returns the smallest element in the set that is greater than the
+  /// given [element] in O(log n) time.
+  /// If no such element is found, returns `null`.
+  ///
+  /// Example:
+  /// ```dart
+  /// final treeSet = RBTreeSet<int>()..addAll([10, 20, 30, 40]);
+  /// print(treeSet.firstAfter(15)); // Output: 20
+  /// print(treeSet.firstAfter(40)); // Output: null
+  /// ```
+  E? firstAfter(E element) => _firstNodeAfter(element)?.key;
 
-  E? lastBefore(E object) => _lastNodeBefore(object)?.key;
+  /// Returns the largest element in the set that is smaller than the
+  /// given [element] in O(log n) time.
+  /// If no such element is found, returns `null`.
+  ///
+  /// Example:
+  /// ```dart
+  /// final treeSet = RBTreeSet<int>()..addAll([10, 20, 30, 40]);
+  /// print(treeSet.lastBefore(25)); // Output: 20
+  /// print(treeSet.lastBefore(10)); // Output: null
+  /// ```
+  E? lastBefore(E element) => _lastNodeBefore(element)?.key;
 
   @override
   Set<E> intersection(Set<Object?> other) {
