@@ -96,7 +96,7 @@ For advanced usage, please refer to API doc.
 
 ## Performance Benchmarking
 
-Benchmarking are done with same data set doing same operations on RBTreeSet and SplayTreeSet separately.
+Benchmarking is done with same data set doing same operations on `RBTreeSet` and `SplayTreeSet` separately.
 
 Code to reproduce the performance metrics can be found [here](https://github.com/Mopriestt/red_black_tree_collection/blob/master/test/benchmark.dart).
 
