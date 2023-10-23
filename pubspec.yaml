@@ -1,6 +1,6 @@
 name: red_black_tree_collection
 description: High performance Red-Black Tree based Set and Map data structures that provide ordered collections with efficient search, insertion, and deletion operations.
-version: 1.1.0
+version: 1.1.1
 homepage: https://github.com/Mopriestt/red_black_tree_collection
 
 environment:

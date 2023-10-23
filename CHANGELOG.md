@@ -1,3 +1,8 @@
+## 1.1.1
+
+* Lint fix.
+* README update.
+
 ## 1.1.0
 
 * README and api doc update.
