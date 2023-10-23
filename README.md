@@ -52,6 +52,9 @@ This Dart library offers high performance Red-Black Tree based Set and Map data 
     for (MapEntry<String, int> entry in treeMap.entries) {
       // Iterate through all (key, value) pair in key sorted order.
     }
+    
+    // Initialize from built in Map.
+    final newMap = RBTreeMap.of(<String, String>{'a' : 'A', 'b' : 'B'});
 ```
 
 ### RBTreeSet
@@ -84,6 +87,9 @@ This Dart library offers high performance Red-Black Tree based Set and Map data 
     for (int element in treeSet) {
       // Iterate through all elements in sorted order.
     }
+
+    // Initialize from built in Set.
+    final newSet = RBTreeSet.of(<String>{'a', 'b', 'c'});
 ```
 
 For advanced usage, please refer to API doc.

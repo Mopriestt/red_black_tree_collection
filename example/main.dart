@@ -2,7 +2,6 @@ import 'package:red_black_tree_collection/red_black_tree_collection.dart';
 
 void main() {
   /// RBTreeSet
-  // final treeSet = RBTreeSet.from([10, 20, 30, 7, 1, 3, 5]);
   final treeSet = RBTreeSet<int>();
   treeSet.add(5);
   treeSet.addAll([10, 20, 30, 7, 1, 3]);
@@ -21,6 +20,9 @@ void main() {
   for (int element in treeSet) {
     // Iterate through all elements in sorted order.
   }
+
+  // Initialize from built in Set.
+  final newSet = RBTreeSet.of(<String>{'a', 'b', 'c'});
 
   /// RBTreeMap
   final treeMap = RBTreeMap<String, int>(
@@ -50,4 +52,7 @@ void main() {
   for (MapEntry<String, int> entry in treeMap.entries) {
     // Iterate through all (key, value) pair in key sorted order.
   }
+
+  // Initialize from built in Map.
+  final newMap = RBTreeMap.of(<String, String>{'a' : 'A', 'b' : 'B'});
 }
