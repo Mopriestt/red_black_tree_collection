@@ -2,11 +2,11 @@ This Dart library offers high performance Red-Black Tree based Set and Map data 
 
 ## Features
 
-**Basic Functionality**: Offers all standard Map and Set functionalities as defined in Dart's interface. Plug and Play!
+**Adaptability**: Offers all standard Map and Set functionalities as defined in Dart's interface. Plug and Play!
 
 **Ordering**: The Red-Black Tree Set and Map maintain a balanced structure, ensuring that elements are ordered efficiently within the collection.
 
-**Performance**: The Red-Black Tree implementation has ~100% performance improvement compare to Dart's `SplayTreeMap` and `SplayTreeSet` in terms of search, insertion, and deletion.
+**Performance**: Approximately 100% performance improvement compared to Dart's `SplayTreeMap` and `SplayTreeSet` in terms of search, insertion, and deletion.
 
 **Additional Functionality**: This library provides efficient implementation of binary searching on keys:
  - `firstAfter` and `lastBefore` on RBTreeSet.
@@ -41,7 +41,9 @@ This Dart library offers high performance Red-Black Tree based Set and Map data 
     // to pre-sorted list
     print(treeMap.keys.toList()); // [alice, Charles, john, Kevin]
     print(treeMap.values.toList()); // [18, 70, 30, 31]
-    print(treeMap.entrys.toList()); // [MapEntry(alice: 18), MapEntry(Charles: 70), MapEntry(john: 30), MapEntry(Kevin: 31)]
+
+    // [MapEntry(alice: 18), MapEntry(Charles: 70), MapEntry(john: 30), MapEntry(Kevin: 31)]
+    print(treeMap.entrys.toList());
     
     // binary search key
     print(treeMap.firstKeyAfter('Alice')); // 'Charles'
@@ -96,15 +98,15 @@ Code to reproduce the performance metrics can be found [here](https://github.com
 
 | Test case                                         | SplayTreeSet | RBTreeSet | Improvement |
 |:--------------------------------------------------|:------------:|:---------:|:-----------:|
-| 1 million insert + 1 million find                 |   ~4266ms    |  ~2028ms  |    ~110%    |
-| 1 million insert + 2 million mixed remove/find    |   ~7131ms    |  ~3544ms  |    ~101%    |
+| 1 million insert + 1 million find                 |    4266ms    |  2028ms   |    ~110%    |
+| 1 million insert + 2 million mixed remove/find    |    7131ms    |  3544ms   |    ~101%    |
 
 #### Multiple Set Test
 
 |                     Test case                      | SplayTreeSet | RBTreeSet | Improvement |
 |:--------------------------------------------------:|:------------:|:---------:|:-----------:|
-| 1000 individual sets with 5k insert + 5k find each |   ~3744ms    |  ~1896ms  |    ~97%     |
+| 1000 individual sets with 5k insert + 5k find each |    3744ms    |  1896ms   |    ~97%     |
 
 ## Misc
 
-### [Source Code](https://github.com/Mopriestt/red_black_tree_collection) and [pub.dev Link](https://pub.dev/packages/red_black_tree_collection)
+### [Source Code](https://github.com/Mopriestt/red_black_tree_collection/tree/master/lib) and [pub.dev Link](https://pub.dev/packages/red_black_tree_collection)

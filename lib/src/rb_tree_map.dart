@@ -44,7 +44,8 @@ class RBTreeMap<K, V> extends _RBTree<K, _RBTreeMapNode<K, V>>
     Map<K, V> other, [
     int Function(K key1, K key2)? compare,
     bool Function(dynamic potentialKey)? isValidKey,
-  ]) => RBTreeMap<K, V>(compare, isValidKey)..addAll(other);
+  ]) =>
+      RBTreeMap<K, V>(compare, isValidKey)..addAll(other);
 
   @override
   V? operator [](Object? key) {
@@ -57,8 +58,7 @@ class RBTreeMap<K, V> extends _RBTree<K, _RBTreeMapNode<K, V>>
     final node = _findNode(key);
     if (node != null) {
       node.value = value;
-    }
-    else {
+    } else {
       _addNewNode(_RBTreeMapNode(key, value));
     }
   }

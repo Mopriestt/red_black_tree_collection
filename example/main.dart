@@ -40,7 +40,9 @@ void main() {
 
   print(treeMap.keys.toList()); // [alice, Charles, john, Kevin]
   print(treeMap.values.toList()); // [18, 70, 30, 31]
-  print(treeMap.entries.toList()); // [MapEntry(alice: 18), MapEntry(Charles: 70), MapEntry(john: 30), MapEntry(Kevin: 31)]
+
+  // [MapEntry(alice: 18), MapEntry(Charles: 70), MapEntry(john: 30), MapEntry(Kevin: 31)]
+  print(treeMap.entries.toList());
 
   print(treeMap.firstKeyAfter('Alice')); // Charles
   print(treeMap.lastKeyBefore('Nobody')); // Kevin

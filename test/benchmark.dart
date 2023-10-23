@@ -101,10 +101,8 @@ void main() {
       var start = DateTime.now().millisecondsSinceEpoch;
       final sets = List.generate(dataCase, (_) => SplayTreeSet<int>());
       for (int i = 0; i < dataCase; i++) {
-        for (int j = 0; j < 5000; j ++)
-          sets[i].add(data[i][j]);
-        for (int j = 0; j < 5000; j ++)
-          sets[i].contains(data[i][j]);
+        for (int j = 0; j < 5000; j++) sets[i].add(data[i][j]);
+        for (int j = 0; j < 5000; j++) sets[i].contains(data[i][j]);
       }
       var end = DateTime.now().millisecondsSinceEpoch;
       print('\n1000 SplayTreeSets with 5000 add + 5000 query each:');
@@ -115,10 +113,8 @@ void main() {
       var start = DateTime.now().millisecondsSinceEpoch;
       final sets = List.generate(dataCase, (_) => RBTreeSet<int>());
       for (int i = 0; i < dataCase; i++) {
-        for (int j = 0; j < 5000; j ++)
-          sets[i].add(data[i][j]);
-        for (int j = 0; j < 5000; j ++)
-          sets[i].contains(data[i][j]);
+        for (int j = 0; j < 5000; j++) sets[i].add(data[i][j]);
+        for (int j = 0; j < 5000; j++) sets[i].contains(data[i][j]);
       }
       var end = DateTime.now().millisecondsSinceEpoch;
       print('\n1000 RBTreeSets with 5000 add + 5000 query each:');

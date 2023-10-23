@@ -26,7 +26,7 @@ void main() {
     test('simple add', () {
       addData(50);
 
-      for (int i = 0; i < 50; i ++) expect(map[i], i);
+      for (int i = 0; i < 50; i++) expect(map[i], i);
       expect(map[50], null);
     });
 
@@ -35,18 +35,18 @@ void main() {
       addData(50);
 
       expect(map.length, 50);
-      for (int i = 0; i < 50; i ++) expect(map[i], i);
+      for (int i = 0; i < 50; i++) expect(map[i], i);
       expect(map[50], null);
     });
 
     test('putIfAbsent', () {
       addData(50);
 
-      for (int i = 0; i < 100; i ++) {
+      for (int i = 0; i < 100; i++) {
         map.putIfAbsent(i, () => i);
       }
 
-      for (int i = 0; i < 100; i ++) {
+      for (int i = 0; i < 100; i++) {
         expect(map[i], i);
       }
     });
@@ -56,11 +56,10 @@ void main() {
     test('update', () {
       addData(50);
 
-      for (int i = 0; i < 100; i ++)
+      for (int i = 0; i < 100; i++)
         map.update(i, (value) => -value, ifAbsent: () => -i);
 
-      for (int i = 0; i < 100; i ++)
-        expect(map[i], -i);
+      for (int i = 0; i < 100; i++) expect(map[i], -i);
     });
 
     test('updateAll', () {
@@ -68,8 +67,7 @@ void main() {
 
       map.updateAll((key, value) => key * value);
 
-      for (int i = 0; i < 50; i ++)
-        expect(map[i], i * i);
+      for (int i = 0; i < 50; i++) expect(map[i], i * i);
     });
   });
 
@@ -121,7 +119,7 @@ void main() {
     test('delete all', () {
       addData(50);
 
-      for (int i = 0; i < 50; i ++) {
+      for (int i = 0; i < 50; i++) {
         expect(map[i], i);
         expect(map.remove(i), i);
         expect(map[i], null);
