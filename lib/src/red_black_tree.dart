@@ -46,7 +46,7 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
 
   Predicate get _validKey;
 
-  /// Counter incremented whenever the keys in the map change.
+  /// Counter incremented whenever the tree structure changes.
   ///
   /// Used to detect concurrent modifications.
   int _modificationCount = 0;
@@ -256,6 +256,8 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     if (node == null) return null;
     var returnNode = node;
 
+    // If target node has 2 children, copy the data from either successor or
+    // predecessor to it and delete the successor/predecessor instead.
     if (node._left != null && node._right != null) {
       // Randomly replace current node with successor or predecessor.
       late Node replacement;
@@ -275,8 +277,9 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
       node = replacement;
     }
 
-    var fixNode = _deleteNodeWithZeroOrOneChild(node);
-    if (fixNode != null) _fixDelete(fixNode);
+    // Node has at most 1 child at this point.
+    var nodeToFix = _deleteNodeWithZeroOrOneChild(node);
+    if (nodeToFix != null) _fixDelete(nodeToFix);
     _modificationCount++;
     return returnNode;
   }
@@ -446,8 +449,8 @@ class _RBTreeKeyIterator<K, Node extends _RBTreeNode<K, Node>>
 }
 
 abstract class IterableElementError {
-  /** Error thrown by, e.g., [Iterable.first] when there is no result. */
+  /// Error thrown by, e.g., [Iterable.first] when there is no result.
   static StateError noElement() => StateError("No element");
-  /** Error thrown by, e.g., [Iterable.single] if there are too many results. */
+  /// Error thrown by, e.g., [Iterable.single] if there are too many results.
   static StateError tooMany() => StateError("Too many elements");
 }
