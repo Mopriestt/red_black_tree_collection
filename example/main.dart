@@ -54,5 +54,5 @@ void main() {
   }
 
   // Initialize from built in Map.
-  final newMap = RBTreeMap.of(<String, String>{'a' : 'A', 'b' : 'B'});
+  final newMap = RBTreeMap.of(<String, String>{'a': 'A', 'b': 'B'});
 }

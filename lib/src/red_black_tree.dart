@@ -17,6 +17,7 @@ enum _Color { red, black }
 abstract class _RBTreeNode<K, Node extends _RBTreeNode<K, Node>> {
   K key;
 
+  bool isLeaf = false;
   _Color _color = _Color.red;
   Node? _left;
   Node? _right;
@@ -226,11 +227,23 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
     node._color = _Color.black;
   }
 
-  Node? _deleteNodeWithZeroOrOneChild(Node node) {
-    Node? replaceChild;
+  // Indicates whether the node being deleted is turned into a temporary leaf.
+  bool _shouldDeleteTemporaryLeaf = false;
+
+  // Delete the node who has at most 1 child, and return the most adjacent node
+  // after deletion used to start fixing red black properties.
+  Node _deleteNodeWithZeroOrOneChild(Node node) {
+    if (node._left == null && node._right == null) {
+      // Set node to be delete as temporary black leaf node.
+      node._color = _Color.black;
+      _shouldDeleteTemporaryLeaf = true;
+      return node;
+    }
+
     final parent = node._parent;
+    late final Node replaceChild;
     if (node._left == null) {
-      replaceChild = node._right;
+      replaceChild = node._right!;
       if (node._isLeftChild) {
         parent?._left = node._right;
       } else {
@@ -238,7 +251,7 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
       }
       node._right?._parent = parent;
     } else {
-      replaceChild = node._left;
+      replaceChild = node._left!;
       if (node._isLeftChild) {
         parent?._left = node._left;
       } else {
@@ -277,9 +290,26 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
       node = replacement;
     }
 
+    _shouldDeleteTemporaryLeaf = false;
     // Node has at most 1 child at this point.
     var nodeToFix = _deleteNodeWithZeroOrOneChild(node);
-    if (nodeToFix != null) _fixDelete(nodeToFix);
+
+    // Fix up
+    _fixDelete(nodeToFix);
+
+    // If nodeToFix is a temporary leaf, remove it.
+    if (_shouldDeleteTemporaryLeaf) {
+      if (nodeToFix == _root) {
+        _root = null;
+      } else {
+        if (nodeToFix._isLeftChild) {
+          nodeToFix._parent?._left = null;
+        } else {
+          nodeToFix._parent?._right = null;
+        }
+      }
+      --_count;
+    }
     _modificationCount++;
     return returnNode;
   }
@@ -451,6 +481,7 @@ class _RBTreeKeyIterator<K, Node extends _RBTreeNode<K, Node>>
 abstract class IterableElementError {
   /// Error thrown by, e.g., [Iterable.first] when there is no result.
   static StateError noElement() => StateError("No element");
+
   /// Error thrown by, e.g., [Iterable.single] if there are too many results.
   static StateError tooMany() => StateError("Too many elements");
 }
