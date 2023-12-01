@@ -105,13 +105,13 @@ Code to reproduce the performance metrics can be found [here](https://github.com
 | Test case                                         | SplayTreeSet | RBTreeSet | Improvement |
 |:--------------------------------------------------|:------------:|:---------:|:-----------:|
 | 1 million insert + 1 million find                 |    4324ms    |  2009ms   |   ~115.2%   |
-| 1 million insert + 2 million mixed remove/find    |    6908ms    |  3274ms   |   ~110.8%   |
+| 1 million insert + 2 million mixed remove/find    |    7215ms    |  3704ms   |   ~94.7%    |
 
 #### Multiple Set Test
 
 |                     Test case                      | SplayTreeSet | RBTreeSet | Improvement |
 |:--------------------------------------------------:|:------------:|:---------:|:-----------:|
-| 1000 individual sets with 5k insert + 5k find each |    4253ms    |  1954ms   |   ~117.6%   |
+| 1000 individual sets with 5k insert + 5k find each |    3756ms    |  2039ms   |   ~84.2%    |
 
 ## Misc
 
