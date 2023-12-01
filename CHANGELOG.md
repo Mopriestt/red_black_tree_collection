@@ -1,3 +1,7 @@
+## 1.2.0
+
+* Update deletion operation to satisfy the strict lower bound complexity.
+
 ## 1.1.1
 
 * Lint fix.
