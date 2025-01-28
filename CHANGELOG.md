@@ -1,3 +1,7 @@
+## 1.3.0
+
+* Optimize deletion fixup logic.
+
 ## 1.2.0
 
 * Update deletion operation to satisfy the strict lower bound complexity.
