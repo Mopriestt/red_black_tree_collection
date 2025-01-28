@@ -232,42 +232,84 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
 
   // Delete the node who has at most 1 child, and return the most adjacent node
   // after deletion used to start fixing red black properties.
-  Node _deleteNodeWithZeroOrOneChild(Node node) {
-    if (node._left == null && node._right == null) {
-      // Set node to be delete as temporary black leaf node.
+  Node? _deleteNodeWithZeroOrOneChild(Node node) {
+    Node? parent = node._parent;
+    Node? left = node._left;
+    Node? right = node._right;
+
+    if (left == null && right == null) {
+      if (node._color == _Color.red) {
+        if (node == _root) {
+          _root = null;
+        } else {
+          if (node._isLeftChild) {
+            parent?._left = null;
+          } else {
+            parent?._right = null;
+          }
+        }
+        --_count;
+        return null;
+      }
+
+      if (node == _root) {
+        _root = null;
+        --_count;
+        return null;
+      }
+
       node._color = _Color.black;
       _shouldDeleteTemporaryLeaf = true;
       return node;
     }
 
-    final parent = node._parent;
-    late final Node replaceChild;
-    if (node._left == null) {
-      replaceChild = node._right!;
-      if (node._isLeftChild) {
-        parent?._left = node._right;
+    Node child = (left != null) ? left : right!;
+    if (node._color == _Color.black) {
+      if (child._color == _Color.red) {
+        if (node == _root) {
+          _root = child;
+          child._parent = null;
+        } else if (node._isLeftChild) {
+          parent?._left = child;
+        } else {
+          parent?._right = child;
+        }
+        child._parent = parent;
+        child._color = _Color.black;
+        --_count;
+        return null;
       } else {
-        parent?._right = node._right;
+        if (node == _root) {
+          _root = child;
+          child._parent = null;
+        } else if (node._isLeftChild) {
+          parent?._left = child;
+        } else {
+          parent?._right = child;
+        }
+        child._parent = parent;
+        --_count;
+        return child;
       }
-      node._right?._parent = parent;
-    } else {
-      replaceChild = node._left!;
-      if (node._isLeftChild) {
-        parent?._left = node._left;
-      } else {
-        parent?._right = node._left;
-      }
-      node._left?._parent = parent;
     }
-    if (node == _root) _root = replaceChild;
+
+    if (node == _root) {
+      _root = child;
+      child._parent = null;
+    } else if (node._isLeftChild) {
+      parent?._left = child;
+    } else {
+      parent?._right = child;
+    }
+    child._parent = parent;
     --_count;
-    return replaceChild;
+    return null;
   }
 
   Node? _removeNode(K key) {
     var node = _findNode(key);
     if (node == null) return null;
-    var returnNode = node;
+    Node returnNode = node._clone;
 
     // If target node has 2 children, copy the data from either successor or
     // predecessor to it and delete the successor/predecessor instead.
@@ -285,31 +327,30 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
           replacement = replacement._left!;
         }
       }
-      returnNode = node._clone;
       node._copyDateFrom(replacement);
       node = replacement;
     }
 
-    _shouldDeleteTemporaryLeaf = false;
-    // Node has at most 1 child at this point.
-    var nodeToFix = _deleteNodeWithZeroOrOneChild(node);
+    Node? nodeToFix = _deleteNodeWithZeroOrOneChild(node);
 
-    // Fix up
-    _fixDelete(nodeToFix);
+    // Fixup if a black node deleted.
+    if (nodeToFix != null) {
+      _fixDelete(nodeToFix);
 
-    // If nodeToFix is a temporary leaf, remove it.
-    if (_shouldDeleteTemporaryLeaf) {
-      if (nodeToFix == _root) {
-        _root = null;
-      } else {
-        if (nodeToFix._isLeftChild) {
-          nodeToFix._parent?._left = null;
+      if (_shouldDeleteTemporaryLeaf) {
+        if (nodeToFix == _root) {
+          _root = null;
         } else {
-          nodeToFix._parent?._right = null;
+          if (nodeToFix._isLeftChild) {
+            nodeToFix._parent?._left = null;
+          } else {
+            nodeToFix._parent?._right = null;
+          }
         }
+        --_count;
       }
-      --_count;
     }
+
     _modificationCount++;
     return returnNode;
   }
