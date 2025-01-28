@@ -351,6 +351,10 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
       }
     }
 
+    if (_root != null) {
+      _root!._color = _Color.black;
+    }
+
     _modificationCount++;
     return returnNode;
   }
