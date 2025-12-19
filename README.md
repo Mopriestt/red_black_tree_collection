@@ -1,118 +1,121 @@
-This Dart library offers high performance Red-Black Tree based Set and Map data structures that provide ordered collections with efficient search, insertion, and deletion operations.
+# Red Black Tree Collection
 
-## Features
+[![Pub Version](https://img.shields.io/pub/v/red_black_tree_collection?logo=dart)](https://pub.dev/packages/red_black_tree_collection)
+[![Pub Points](https://img.shields.io/pub/points/red_black_tree_collection?logo=dart)](https://pub.dev/packages/red_black_tree_collection)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Mopriestt/red_black_tree_collection/blob/master/LICENSE)
 
-**Adaptability**: Offers all standard Map and Set functionalities as defined in Dart's interface. Plug and Play!
+A high-performance, strictly ordered **Set** and **Map** implementation based on self-balancing Red-Black Trees.
 
-**Ordering**: The Red-Black Tree Set and Map maintain a balanced structure, ensuring that elements are ordered efficiently within the collection.
+Designed as a drop-in replacement for Dart's native `SplayTreeMap` and `SplayTreeSet`, this library offers significantly better performance (**up to 2x faster**) in random-access scenarios where the temporal locality of Splay Trees becomes a bottleneck.
 
-**Performance**: Approximately 110% performance improvement compared to Dart's `SplayTreeMap` and `SplayTreeSet` in terms of search, insertion, and deletion.
+## 🚀 Why Use This?
 
-**Additional Functionality**: This library provides efficient implementation of binary searching on keys:
- - `firstAfter` and `lastBefore` on RBTreeSet.
- - `firstKeyAfter` and `lastKeyBefore` on RBTreeMap.
+Dart's standard `dart:collection` uses **Splay Trees**, which optimize for frequently accessing the same elements ("temporal locality"). However, for **random access patterns**, Splay Trees suffer from constant rebalancing overhead.
 
-**Test Coverage**: This library is well unit tested and integration tested.
+**Red-Black Trees** offer a stable `O(log n)` performance guarantee for all operations, making them the superior choice for:
+* **High-frequency random insertions/deletions.**
+* **Latency-sensitive applications** (gaming, high-frequency data processing).
+* **Read-heavy workloads** where you don't want read operations to mutate the tree structure (memory write overhead).
 
-## Basic Usage
+### Key Features
+* **⚡ High Performance:** Optimized for Dart AOT/JIT, outperforming `SplayTree` by **~115%** in random operations.
+* **🛠️ Drop-in Replacement:** Fully implements `Map<K, V>` and `Set<E>` interfaces. Plug and play compatibility.
+* **🔍 Advanced Navigation:** Provides `firstAfter`, `lastBefore`, `firstKeyAfter`, and `lastKeyBefore` for efficient range queries (floor/ceiling operations).
+* **⚖️ Balanced:** Guarantees strict balancing, ensuring worst-case execution time remains logarithmic.
 
-### RBTreeMap
+---
 
-```dart
-    final treeMap = RBTreeMap<String, int>(
-      // Example of custom comparator
-      // Use case insensitive string compare.
-          (a, b) => a.toLowerCase().compareTo(b.toLowerCase()),
-    );
+## 📊 Performance Benchmarks
 
-    // add
-    treeMap['john'] = 30;
-    treeMap['BoB'] = 20;
-    treeMap['Kevin'] = 31;
-    
-    // remove
-    print(treeMap['BoB']); // 20
-    treeMap.remove('BoB');
-    print(treeMap['BoB']); // null
-    
-    // add from other map
-    treeMap.addAll(const {'alice': 18, 'Charles': 70});
-    
-    // to pre-sorted list
-    print(treeMap.keys.toList()); // [alice, Charles, john, Kevin]
-    print(treeMap.values.toList()); // [18, 70, 30, 31]
+Benchmarks were conducted comparing `RBTreeSet` vs `SplayTreeSet` on the same dataset.
+*(Source code: [test/benchmark.dart](https://github.com/Mopriestt/red_black_tree_collection/blob/master/test/benchmark.dart))*
 
-    // [MapEntry(alice: 18), MapEntry(Charles: 70), MapEntry(john: 30), MapEntry(Kevin: 31)]
-    print(treeMap.entrys.toList());
-    
-    // binary search key
-    print(treeMap.firstKeyAfter('Alice')); // 'Charles'
-    print(treeMap.lastKeyBefore('Nobody')); // 'Kevin'
-    
-    for (MapEntry<String, int> entry in treeMap.entries) {
-      // Iterate through all (key, value) pair in key sorted order.
-    }
-    
-    // Initialize from built in Map.
-    final newMap = RBTreeMap.of(<String, String>{'a' : 'A', 'b' : 'B'});
-```
+### 1. Single Set Operations (1 Million Elements)
 
-### RBTreeSet
+| Operation | SplayTreeSet (Dart SDK) | RBTreeSet (This Lib) | Improvement |
+| :--- | :---: | :---: | :---: |
+| **Insert + Find** | 4324 ms | **2009 ms** | **2.15x Faster** (+115%) |
+| **Insert + Mixed Remove/Find** | 7215 ms | **3704 ms** | **1.95x Faster** (+95%) |
+
+### 2. Multiple Sets (1000 Sets x 5k ops)
+
+| Operation | SplayTreeSet (Dart SDK) | RBTreeSet (This Lib) | Improvement |
+| :--- | :---: | :---: | :---: |
+| **Batch Processing** | 3756 ms | **2039 ms** | **1.84x Faster** (+84%) |
+
+> **Note:** Splay Trees may still be faster for scenarios with extreme temporal locality (accessing the same 1% of data 99% of the time). For general or random workloads, `RBTree` is the winner.
+
+---
+
+## 💻 Usage
+
+### RBTreeMap (Ordered Map)
+
+Works exactly like a standard Map, but keys are always sorted.
 
 ```dart
-    final treeSet = RBTreeSet<int>();
-    // alternative constructor
-    // final treeSet = RBTreeSet.from([10, 20, 30, 7, 1, 3, 5]);
+import 'package:red_black_tree_collection/red_black_tree_collection.dart';
+
+void main() {
+  // 1. Create with a custom comparator (optional)
+  final treeMap = RBTreeMap<String, int>(
+    (a, b) => a.toLowerCase().compareTo(b.toLowerCase()),
+  );
+
+  // 2. Standard Map operations
+  treeMap['john'] = 30;
+  treeMap['BoB'] = 20;
+  treeMap['Kevin'] = 31;
   
-    // add
-    treeSet.add(5);
-    treeSet.addAll([10, 20, 30, 7, 1, 3]);
+  print(treeMap.keys.toList()); // [BoB, john, Kevin] (Sorted by lowercase)
 
-    // lookup
-    print(treeSet.contains(3)); // true
-    print(treeSet.contains(100)); // false;
-    print(treeSet.lookup(30)); // 30
-    print(treeSet.lookup(45.0)); // null
+  // 3. 🌟 Advanced: Range Navigation (Floor/Ceiling)
+  // Find the first key strictly greater than 'Alice'
+  print(treeMap.firstKeyAfter('Alice')); // 'BoB'
+  
+  // Find the last key strictly less than 'Nobody'
+  print(treeMap.lastKeyBefore('Nobody')); // 'Kevin'
 
-    // binary search element
-    print(treeSet.firstAfter(15)); // 20
-    print(treeSet.lastBefore(10)); // 7
-
-    // remove
-    treeSet.removeAll([1, 7, 30]);
-
-    // to pre-sorted list
-    print(treeSet.toList()); // [3, 5, 10, 20]
-
-    for (int element in treeSet) {
-      // Iterate through all elements in sorted order.
-    }
-
-    // Initialize from built in Set.
-    final newSet = RBTreeSet.of(<String>{'a', 'b', 'c'});
+  // 4. Iterate efficiently
+  for (final entry in treeMap.entries) {
+    print('${entry.key}: ${entry.value}');
+  }
+}
 ```
 
-For advanced usage, please refer to API doc.
+### RBTreeSet (Ordered Set)
 
-## Performance Benchmarking
+```dart
+import 'package:red_black_tree_collection/red_black_tree_collection.dart';
 
-Benchmarking is done with same data set doing same operations on `RBTreeSet` and `SplayTreeSet` separately.
+void main() {
+  final treeSet = RBTreeSet<int>();
+  treeSet.addAll([10, 20, 30, 7, 1, 3]);
 
-Code to reproduce the performance metrics can be found [here](https://github.com/Mopriestt/red_black_tree_collection/blob/master/test/benchmark.dart).
+  // Standard lookups
+  print(treeSet.contains(10)); // true
+  
+  // 🌟 Advanced: Binary Search for Closest Matches
+  print(treeSet.firstAfter(15)); // 20 (Smallest element > 15)
+  print(treeSet.lastBefore(10)); // 7  (Largest element < 10)
 
-#### Single Set Test
+  // Subsets and Conversions
+  print(treeSet.toList()); // [1, 3, 7, 10, 20, 30]
+}
+```
 
-| Test case                                         | SplayTreeSet | RBTreeSet | Improvement |
-|:--------------------------------------------------|:------------:|:---------:|:-----------:|
-| 1 million insert + 1 million find                 |    4324ms    |  2009ms   |   ~115.2%   |
-| 1 million insert + 2 million mixed remove/find    |    7215ms    |  3704ms   |   ~94.7%    |
+---
 
-#### Multiple Set Test
+## Installation
 
-|                     Test case                      | SplayTreeSet | RBTreeSet | Improvement |
-|:--------------------------------------------------:|:------------:|:---------:|:-----------:|
-| 1000 individual sets with 5k insert + 5k find each |    3756ms    |  2039ms   |   ~84.2%    |
+Add this to your `pubspec.yaml`:
 
-## Misc
+```yaml
+dependencies:
+  red_black_tree_collection: ^latest_version
+```
 
-### [Source Code](https://github.com/Mopriestt/red_black_tree_collection/tree/master/lib) and [pub.dev Link](https://pub.dev/packages/red_black_tree_collection)
+## Contribution
+
+Issues and Pull Requests are welcome!
+Check out the source code on [GitHub](https://github.com/Mopriestt/red_black_tree_collection).

@@ -1,3 +1,7 @@
+## 1.3.2
+
+* Update README.
+
 ## 1.3.1
 
 * Ensure root to be black after deletion to maintain red-black property.
