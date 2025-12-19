@@ -112,7 +112,7 @@ Add this to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  red_black_tree_collection: ^latest_version
+  red_black_tree_collection: ^1.3.2
 ```
 
 ## Contribution
