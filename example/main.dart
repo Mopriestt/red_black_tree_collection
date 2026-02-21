@@ -17,12 +17,12 @@ void main() {
   treeSet.removeAll([1, 7, 30]);
   print(treeSet.toList()); // [3, 5, 10, 20]
 
-  for (int element in treeSet) {
+  for (int _ in treeSet) {
     // Iterate through all elements in sorted order.
   }
 
-  // Initialize from built in Set.
   final newSet = RBTreeSet.of(<String>{'a', 'b', 'c'});
+  print(newSet.length);
 
   /// RBTreeMap
   final treeMap = RBTreeMap<String, int>(
@@ -49,10 +49,11 @@ void main() {
   print(treeMap.firstKeyAfter('Alice')); // Charles
   print(treeMap.lastKeyBefore('Nobody')); // Kevin
 
-  for (MapEntry<String, int> entry in treeMap.entries) {
+  for (MapEntry<String, int> _ in treeMap.entries) {
     // Iterate through all (key, value) pair in key sorted order.
   }
 
   // Initialize from built in Map.
   final newMap = RBTreeMap.of(<String, String>{'a': 'A', 'b': 'B'});
+  print(newMap.length);
 }
