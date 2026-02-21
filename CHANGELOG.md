@@ -1,3 +1,7 @@
+## 1.4.0
+
+* Performance improvement by explicitly override util functions with optimal implementations.
+
 ## 1.3.3
 
 * Update README.
