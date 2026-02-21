@@ -17,7 +17,6 @@ enum _Color { red, black }
 abstract class _RBTreeNode<K, Node extends _RBTreeNode<K, Node>> {
   K key;
 
-  bool isLeaf = false;
   _Color _color = _Color.red;
   Node? _left;
   Node? _right;
@@ -35,7 +34,7 @@ abstract class _RBTreeNode<K, Node extends _RBTreeNode<K, Node>> {
 
   _RBTreeNode(this.key);
 
-  void _copyDateFrom(Node other) => key = other.key;
+  void _copyDataFrom(Node other) => key = other.key;
   Node get _clone;
 }
 
@@ -327,7 +326,7 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
           replacement = replacement._left!;
         }
       }
-      node._copyDateFrom(replacement);
+      node._copyDataFrom(replacement);
       node = replacement;
     }
 
@@ -348,6 +347,7 @@ abstract class _RBTree<K, Node extends _RBTreeNode<K, Node>> {
           }
         }
         --_count;
+        _shouldDeleteTemporaryLeaf = false;
       }
     }
 

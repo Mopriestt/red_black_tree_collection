@@ -14,8 +14,6 @@ class _RBTreeSetNode<K> extends _RBTreeNode<K, _RBTreeSetNode<K>> {
 
 class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
     with Iterable<E>, SetMixin<E> {
-  _RBTreeSetNode<E>? _root;
-
   Comparator<E> _compare;
   Predicate _validKey;
 
@@ -127,7 +125,7 @@ class RBTreeSet<E> extends _RBTree<E, _RBTreeSetNode<E>>
   @override
   E get single {
     if (_count == 0) throw IterableElementError.noElement();
-    if (_count == 0) throw IterableElementError.tooMany();
+    if (_count > 1) throw IterableElementError.tooMany();
     return _root!.key;
   }
 

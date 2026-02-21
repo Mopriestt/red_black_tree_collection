@@ -13,7 +13,7 @@ class _RBTreeMapNode<K, V> extends _RBTreeNode<K, _RBTreeMapNode<K, V>> {
   _RBTreeMapNode(K key, this.value) : super(key);
 
   @override
-  void _copyDateFrom(_RBTreeMapNode<K, V> other) {
+  void _copyDataFrom(_RBTreeMapNode<K, V> other) {
     key = other.key;
     value = other.value;
   }
@@ -123,11 +123,33 @@ class RBTreeMap<K, V> extends _RBTree<K, _RBTreeMapNode<K, V>>
   Iterable<V> get values => _RBTreeValueIterable<K, V>(this);
 
   Iterable<MapEntry<K, V>> get entries => _RBTreeMapEntryIterable<K, V>(this);
+
+  @override
+  int get length => _count;
+
+  @override
+  bool get isEmpty => _root == null;
+
+  @override
+  bool get isNotEmpty => _root != null;
+
+  @override
+  bool containsKey(Object? key) {
+    return _validKey(key) && _containsKey(key);
+  }
+
+  @override
+  bool containsValue(Object? value) {
+    for (var v in values) {
+      if (v == value) return true;
+    }
+    return false;
+  }
 }
 
 class _RBTreeKeyIterable<K, Node extends _RBTreeNode<K, Node>>
     extends Iterable<K> {
-  _RBTree<K, Node> _tree;
+  final _RBTree<K, Node> _tree;
 
   _RBTreeKeyIterable(this._tree);
 
@@ -143,7 +165,7 @@ class _RBTreeKeyIterable<K, Node extends _RBTreeNode<K, Node>>
 }
 
 class _RBTreeValueIterable<K, V> extends Iterable<V> {
-  RBTreeMap<K, V> _map;
+  final RBTreeMap<K, V> _map;
 
   _RBTreeValueIterable(this._map);
 
@@ -162,7 +184,7 @@ class _RBTreeValueIterator<K, V>
 }
 
 class _RBTreeMapEntryIterable<K, V> extends Iterable<MapEntry<K, V>> {
-  RBTreeMap<K, V> _map;
+  final RBTreeMap<K, V> _map;
 
   _RBTreeMapEntryIterable(this._map);
 
